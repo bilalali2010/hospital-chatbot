@@ -1,47 +1,52 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
+const QUICK_REPLIES = [
+  "What services do you provide?",
+  "What are your working hours?",
+  "Do you accept insurance?",
+];
+
 export default function ChatApp() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: "assistant", content: "Hello! How can I help you today?" },
+  ]);
   const [input, setInput] = useState("");
-  const [businessData, setBusinessData] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [businessData, setBusinessData] = useState("");
   const chatEndRef = useRef(null);
 
-  // detect admin mode
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("admin") === "1") {
       const pwd = prompt("Enter admin password:");
-      if (pwd === "@supersecret") {
-        setIsAdmin(true);
-      }
+      if (pwd === "@supersecret") setIsAdmin(true);
     }
   }, []);
 
-  // auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (text) => {
+    const msg = text || input;
+    if (!msg.trim()) return;
 
-    const userMsg = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((p) => [...p, { role: "user", content: msg }]);
     setInput("");
+    setIsTyping(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
+      body: JSON.stringify({ message: msg }),
     });
 
     const data = await res.json();
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: data.reply },
-    ]);
+    setIsTyping(false);
+
+    setMessages((p) => [...p, { role: "assistant", content: data.reply }]);
   };
 
   const saveBusinessData = async () => {
@@ -53,140 +58,130 @@ export default function ChatApp() {
         password: "@supersecret",
       }),
     });
-
-    if (res.ok) {
-      alert("Business information saved successfully!");
-    } else {
-      alert("Failed to save data");
-    }
+    alert(res.ok ? "Information saved globally!" : "Save failed");
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 420,
-        margin: "0 auto",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        border: "1px solid #ddd",
-        fontFamily: "sans-serif",
-      }}
-    >
-      {/* HEADER */}
-      <div
-        style={{
-          padding: 12,
-          background: "#2b4c7e",
-          color: "#fff",
-          textAlign: "center",
-          fontWeight: "bold",
-        }}
-      >
-        HOSPITAL BOT
-      </div>
-
-      {/* CHAT WINDOW */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: "auto",
-          padding: 10,
-          background: "#f5f7fb",
-        }}
-      >
+    <div style={styles.container}>
+      <div style={styles.chat}>
         {messages.map((m, i) => (
           <div
             key={i}
             style={{
-              display: "flex",
-              justifyContent:
-                m.role === "user" ? "flex-end" : "flex-start",
-              marginBottom: 8,
+              ...styles.bubble,
+              ...(m.role === "user" ? styles.user : styles.bot),
+              animation: "fadeSlide 0.3s ease",
             }}
           >
-            <div
-              style={{
-                maxWidth: "75%",
-                padding: "10px 14px",
-                borderRadius: 16,
-                background:
-                  m.role === "user" ? "#2b4c7e" : "#e1e7f0",
-                color: m.role === "user" ? "#fff" : "#000",
-                fontSize: 14,
-              }}
-            >
-              {m.content}
-            </div>
+            {m.content}
           </div>
         ))}
+
+        {isTyping && <div style={styles.typing}>•••</div>}
+
+        {/* Quick replies */}
+        <div style={styles.quickWrap}>
+          {QUICK_REPLIES.map((q) => (
+            <button key={q} style={styles.quickBtn} onClick={() => sendMessage(q)}>
+              {q}
+            </button>
+          ))}
+        </div>
+
         <div ref={chatEndRef} />
       </div>
 
-      {/* INPUT */}
-      <div
-        style={{
-          display: "flex",
-          padding: 10,
-          borderTop: "1px solid #ddd",
-        }}
-      >
+      <div style={styles.inputBar}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Write a message"
-          style={{
-            flex: 1,
-            padding: 10,
-            borderRadius: 20,
-            border: "1px solid #ccc",
-            outline: "none",
-          }}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="Type your message..."
+          style={styles.input}
         />
-        <button
-          onClick={sendMessage}
-          style={{
-            marginLeft: 8,
-            padding: "0 16px",
-            borderRadius: 20,
-            background: "#2b4c7e",
-            color: "#fff",
-            border: "none",
-          }}
-        >
-          Send
+        <button onClick={() => sendMessage()} style={styles.send}>
+          ➤
         </button>
       </div>
 
-      {/* ADMIN PANEL */}
       {isAdmin && (
-        <div style={{ padding: 10, borderTop: "1px solid #ccc" }}>
+        <div style={styles.admin}>
           <textarea
-            placeholder="Paste business information here..."
             value={businessData}
             onChange={(e) => setBusinessData(e.target.value)}
-            style={{
-              width: "100%",
-              height: 120,
-              padding: 10,
-              marginBottom: 8,
-            }}
+            placeholder="Paste hospital info here"
+            style={styles.textarea}
           />
-          <button
-            onClick={saveBusinessData}
-            style={{
-              width: "100%",
-              padding: 10,
-              background: "#1f7a3f",
-              color: "#fff",
-              border: "none",
-            }}
-          >
+          <button onClick={saveBusinessData} style={styles.save}>
             Save Information
           </button>
         </div>
       )}
+
+      <style>{`
+        @keyframes fadeSlide {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    maxWidth: 420,
+    margin: "0 auto",
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    background: "#f4f6fb",
+  },
+  chat: { flex: 1, overflowY: "auto", padding: 12 },
+  bubble: {
+    padding: "10px 14px",
+    borderRadius: 18,
+    marginBottom: 8,
+    maxWidth: "80%",
+  },
+  user: { background: "#2b4c7e", color: "#fff", marginLeft: "auto" },
+  bot: { background: "#e6ebf5", color: "#000" },
+  typing: {
+    background: "#e6ebf5",
+    padding: "8px 14px",
+    borderRadius: 18,
+    width: 50,
+  },
+  inputBar: {
+    display: "flex",
+    padding: 10,
+    background: "#fff",
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 20,
+    border: "1px solid #ccc",
+  },
+  send: {
+    marginLeft: 8,
+    padding: "0 14px",
+    borderRadius: "50%",
+  },
+  quickWrap: {
+    display: "flex",
+    gap: 6,
+    flexWrap: "wrap",
+    marginTop: 6,
+  },
+  quickBtn: {
+    fontSize: 12,
+    padding: "6px 10px",
+    borderRadius: 14,
+    border: "1px solid #ccc",
+    background: "#fff",
+  },
+  admin: { padding: 10, background: "#fff" },
+  textarea: { width: "100%", height: 120 },
+  save: { width: "100%", marginTop: 6 },
+};
