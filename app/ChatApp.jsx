@@ -1,12 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const QUICK_REPLIES = [
-  "What services do you provide?",
-  "What are your working hours?",
-  "Do you accept insurance?",
-];
-
 export default function ChatApp() {
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hello! How can I help you today?" },
@@ -20,7 +14,7 @@ export default function ChatApp() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("admin") === "1") {
-      const pwd = prompt("Enter admin password:");
+      const pwd = prompt("Enter admin password");
       if (pwd === "@supersecret") setIsAdmin(true);
     }
   }, []);
@@ -29,24 +23,27 @@ export default function ChatApp() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const sendMessage = async (text) => {
-    const msg = text || input;
-    if (!msg.trim()) return;
+  const sendMessage = async () => {
+    if (!input.trim()) return;
 
-    setMessages((p) => [...p, { role: "user", content: msg }]);
+    const userMessage = { role: "user", content: input };
+    setMessages((p) => [...p, userMessage]);
     setInput("");
     setIsTyping(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: msg }),
+      body: JSON.stringify({ message: userMessage.content }),
     });
 
     const data = await res.json();
     setIsTyping(false);
 
-    setMessages((p) => [...p, { role: "assistant", content: data.reply }]);
+    setMessages((p) => [
+      ...p,
+      { role: "assistant", content: data.reply },
+    ]);
   };
 
   const saveBusinessData = async () => {
@@ -58,35 +55,44 @@ export default function ChatApp() {
         password: "@supersecret",
       }),
     });
-    alert(res.ok ? "Information saved globally!" : "Save failed");
+
+    alert(res.ok ? "Information saved" : "Save failed");
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.chat}>
+    <div style={styles.wrapper}>
+      <div style={styles.chatArea}>
         {messages.map((m, i) => (
           <div
             key={i}
             style={{
-              ...styles.bubble,
-              ...(m.role === "user" ? styles.user : styles.bot),
-              animation: "fadeSlide 0.3s ease",
+              ...styles.row,
+              justifyContent:
+                m.role === "user" ? "flex-end" : "flex-start",
             }}
           >
-            {m.content}
+            <div
+              style={{
+                ...styles.bubble,
+                ...(m.role === "user"
+                  ? styles.userBubble
+                  : styles.botBubble),
+              }}
+            >
+              {m.content}
+            </div>
           </div>
         ))}
 
-        {isTyping && <div style={styles.typing}>•••</div>}
-
-        {/* Quick replies */}
-        <div style={styles.quickWrap}>
-          {QUICK_REPLIES.map((q) => (
-            <button key={q} style={styles.quickBtn} onClick={() => sendMessage(q)}>
-              {q}
-            </button>
-          ))}
-        </div>
+        {isTyping && (
+          <div style={styles.row}>
+            <div style={styles.botBubble}>
+              <span className="dot">.</span>
+              <span className="dot">.</span>
+              <span className="dot">.</span>
+            </div>
+          </div>
+        )}
 
         <div ref={chatEndRef} />
       </div>
@@ -99,8 +105,8 @@ export default function ChatApp() {
           placeholder="Type your message..."
           style={styles.input}
         />
-        <button onClick={() => sendMessage()} style={styles.send}>
-          ➤
+        <button onClick={sendMessage} style={styles.sendBtn}>
+          Send
         </button>
       </div>
 
@@ -109,19 +115,27 @@ export default function ChatApp() {
           <textarea
             value={businessData}
             onChange={(e) => setBusinessData(e.target.value)}
-            placeholder="Paste hospital info here"
+            placeholder="Paste hospital information here"
             style={styles.textarea}
           />
-          <button onClick={saveBusinessData} style={styles.save}>
+          <button onClick={saveBusinessData} style={styles.saveBtn}>
             Save Information
           </button>
         </div>
       )}
 
       <style>{`
-        @keyframes fadeSlide {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
+        .dot {
+          animation: blink 1.4s infinite both;
+          font-size: 22px;
+        }
+        .dot:nth-child(2) { animation-delay: .2s; }
+        .dot:nth-child(3) { animation-delay: .4s; }
+
+        @keyframes blink {
+          0% { opacity: .2 }
+          20% { opacity: 1 }
+          100% { opacity: .2 }
         }
       `}</style>
     </div>
@@ -129,59 +143,83 @@ export default function ChatApp() {
 }
 
 const styles = {
-  container: {
+  wrapper: {
     maxWidth: 420,
     margin: "0 auto",
     height: "100vh",
     display: "flex",
     flexDirection: "column",
-    background: "#f4f6fb",
+    background: "#ffffff",
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont",
   },
-  chat: { flex: 1, overflowY: "auto", padding: 12 },
+  chatArea: {
+    flex: 1,
+    padding: "16px 12px",
+    overflowY: "auto",
+    background: "#f7f8fa",
+  },
+  row: {
+    display: "flex",
+    marginBottom: 10,
+  },
   bubble: {
     padding: "10px 14px",
     borderRadius: 18,
-    marginBottom: 8,
-    maxWidth: "80%",
+    maxWidth: "78%",
+    fontSize: 14.5,
+    lineHeight: 1.4,
   },
-  user: { background: "#2b4c7e", color: "#fff", marginLeft: "auto" },
-  bot: { background: "#e6ebf5", color: "#000" },
-  typing: {
-    background: "#e6ebf5",
-    padding: "8px 14px",
-    borderRadius: 18,
-    width: 50,
+  userBubble: {
+    background: "#2563eb",
+    color: "#fff",
+    borderBottomRightRadius: 4,
+  },
+  botBubble: {
+    background: "#e5e7eb",
+    color: "#111827",
+    borderBottomLeftRadius: 4,
   },
   inputBar: {
     display: "flex",
-    padding: 10,
+    padding: 12,
+    borderTop: "1px solid #e5e7eb",
     background: "#fff",
   },
   input: {
     flex: 1,
-    padding: 10,
+    padding: "10px 14px",
     borderRadius: 20,
-    border: "1px solid #ccc",
+    border: "1px solid #d1d5db",
+    fontSize: 14,
   },
-  send: {
+  sendBtn: {
     marginLeft: 8,
-    padding: "0 14px",
-    borderRadius: "50%",
+    padding: "0 16px",
+    borderRadius: 20,
+    border: "none",
+    background: "#2563eb",
+    color: "#fff",
+    fontSize: 14,
+    cursor: "pointer",
   },
-  quickWrap: {
-    display: "flex",
-    gap: 6,
-    flexWrap: "wrap",
-    marginTop: 6,
+  admin: {
+    padding: 12,
+    borderTop: "1px solid #e5e7eb",
+    background: "#fafafa",
   },
-  quickBtn: {
-    fontSize: 12,
-    padding: "6px 10px",
-    borderRadius: 14,
-    border: "1px solid #ccc",
-    background: "#fff",
+  textarea: {
+    width: "100%",
+    height: 110,
+    padding: 10,
+    fontSize: 13,
   },
-  admin: { padding: 10, background: "#fff" },
-  textarea: { width: "100%", height: 120 },
-  save: { width: "100%", marginTop: 6 },
+  saveBtn: {
+    marginTop: 8,
+    width: "100%",
+    padding: 10,
+    background: "#111827",
+    color: "#fff",
+    border: "none",
+    cursor: "pointer",
+  },
 };
