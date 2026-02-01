@@ -1,208 +1,192 @@
 "use client";
-
-import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
-
-const ADMIN_PASSWORD = "@supersecret";
+import { useEffect, useRef, useState } from "react";
 
 export default function ChatApp() {
-  const searchParams = useSearchParams();
-  const isAdminParam = searchParams.get("admin") === "1";
-
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
   const [businessData, setBusinessData] = useState("");
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]); // store chat history
-  const [loading, setLoading] = useState(false);
-  const [quickReplies, setQuickReplies] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const chatEndRef = useRef(null);
 
-  // Scroll to bottom when new message
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(scrollToBottom, [messages]);
-
-  // Load business data
+  // detect admin mode
   useEffect(() => {
-    const savedData = localStorage.getItem("businessData") || "";
-    setBusinessData(savedData);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("admin") === "1") {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === "@supersecret") {
+        setIsAdmin(true);
+      }
+    }
   }, []);
 
-  // Admin password
+  // auto scroll
   useEffect(() => {
-    if (isAdminParam) {
-      const enteredPassword = prompt("Enter admin password:");
-      if (enteredPassword === ADMIN_PASSWORD) setIsAdmin(true);
-      else alert("Wrong password");
-    }
-  }, [isAdminParam]);
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  const saveBusinessData = () => {
-    localStorage.setItem("businessData", businessData);
-    alert("Business information saved!");
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    const userMsg = { role: "user", content: input };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: input }),
+    });
+
+    const data = await res.json();
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: data.reply },
+    ]);
   };
 
-  // Send message to API
-  const sendMessage = async (msg = message) => {
-    if (!msg) return;
-    setLoading(true);
-    setMessages((prev) => [...prev, { type: "user", text: msg }]);
-    setMessage("");
+  const saveBusinessData = async () => {
+    const res = await fetch("/api/admin/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        businessData,
+        password: "@supersecret",
+      }),
+    });
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg, businessData })
-      });
-      const data = await res.json();
-      setMessages((prev) => [...prev, { type: "bot", text: data.reply }]);
-      setQuickReplies([]); // can be updated to add dynamic quick replies if needed
-    } catch (err) {
-      setMessages((prev) => [...prev, { type: "bot", text: "Error: could not get response." }]);
+    if (res.ok) {
+      alert("Business information saved successfully!");
+    } else {
+      alert("Failed to save data");
     }
-
-    setLoading(false);
-  };
-
-  const handleQuickReply = (btn) => {
-    sendMessage(btn);
   };
 
   return (
     <div
       style={{
-        maxWidth: 500,
-        margin: "50px auto",
-        fontFamily: "Arial, sans-serif",
+        maxWidth: 420,
+        margin: "0 auto",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
-        height: "80vh",
-        border: "1px solid #ccc",
-        borderRadius: 12,
-        overflow: "hidden",
-        background: "#f8f9fa",
+        border: "1px solid #ddd",
+        fontFamily: "sans-serif",
       }}
     >
-      {/* Chat Header */}
+      {/* HEADER */}
       <div
         style={{
-          padding: "10px 20px",
-          background: "#0d6efd",
+          padding: 12,
+          background: "#2b4c7e",
           color: "#fff",
+          textAlign: "center",
           fontWeight: "bold",
-          fontSize: 18,
         }}
       >
-        🤖 Business AI Chatbot
+        HubBot
       </div>
 
-      {/* Admin Panel */}
-      {isAdmin && (
-        <div style={{ padding: 10, background: "#e9ecef" }}>
-          <h4>🔐 Admin Panel</h4>
-          <textarea
-            placeholder="Paste business info here..."
-            rows={4}
-            style={{ width: "100%", borderRadius: 6, padding: 6 }}
-            value={businessData}
-            onChange={(e) => setBusinessData(e.target.value)}
-          />
-          <button
-            onClick={saveBusinessData}
-            style={{
-              marginTop: 6,
-              padding: 8,
-              width: "100%",
-              borderRadius: 6,
-              background: "#0d6efd",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            💾 Save Information
-          </button>
-        </div>
-      )}
-
-      {/* Chat messages */}
+      {/* CHAT WINDOW */}
       <div
         style={{
           flex: 1,
-          padding: 10,
           overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-          background: "#f1f3f5",
+          padding: 10,
+          background: "#f5f7fb",
         }}
       >
         {messages.map((m, i) => (
           <div
             key={i}
             style={{
-              alignSelf: m.type === "user" ? "flex-end" : "flex-start",
-              background: m.type === "user" ? "#0d6efd" : "#e9ecef",
-              color: m.type === "user" ? "#fff" : "#000",
-              padding: "8px 12px",
-              borderRadius: 16,
-              maxWidth: "80%",
-              wordBreak: "break-word",
+              display: "flex",
+              justifyContent:
+                m.role === "user" ? "flex-end" : "flex-start",
+              marginBottom: 8,
             }}
           >
-            {m.text}
+            <div
+              style={{
+                maxWidth: "75%",
+                padding: "10px 14px",
+                borderRadius: 16,
+                background:
+                  m.role === "user" ? "#2b4c7e" : "#e1e7f0",
+                color: m.role === "user" ? "#fff" : "#000",
+                fontSize: 14,
+              }}
+            >
+              {m.content}
+            </div>
           </div>
         ))}
         <div ref={chatEndRef} />
       </div>
 
-      {/* Quick Reply Buttons */}
-      {quickReplies.length > 0 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: 10 }}>
-          {quickReplies.map((btn, i) => (
-            <button
-              key={i}
-              style={{
-                padding: "6px 12px",
-                borderRadius: 12,
-                border: "1px solid #0d6efd",
-                background: "#fff",
-                cursor: "pointer",
-                flex: "auto",
-              }}
-              onClick={() => handleQuickReply(btn)}
-            >
-              {btn}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Input Box */}
-      <div style={{ display: "flex", padding: 10, gap: 6, background: "#fff" }}>
+      {/* INPUT */}
+      <div
+        style={{
+          display: "flex",
+          padding: 10,
+          borderTop: "1px solid #ddd",
+        }}
+      >
         <input
-          placeholder="Write a message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{ flex: 1, padding: 10, borderRadius: 12, border: "1px solid #ccc" }}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Write a message"
+          style={{
+            flex: 1,
+            padding: 10,
+            borderRadius: 20,
+            border: "1px solid #ccc",
+            outline: "none",
+          }}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
-          onClick={() => sendMessage()}
+          onClick={sendMessage}
           style={{
+            marginLeft: 8,
             padding: "0 16px",
-            borderRadius: 12,
-            background: "#0d6efd",
+            borderRadius: 20,
+            background: "#2b4c7e",
             color: "#fff",
             border: "none",
-            cursor: "pointer",
           }}
         >
-          ➤
+          Send
         </button>
       </div>
+
+      {/* ADMIN PANEL */}
+      {isAdmin && (
+        <div style={{ padding: 10, borderTop: "1px solid #ccc" }}>
+          <textarea
+            placeholder="Paste business information here..."
+            value={businessData}
+            onChange={(e) => setBusinessData(e.target.value)}
+            style={{
+              width: "100%",
+              height: 120,
+              padding: 10,
+              marginBottom: 8,
+            }}
+          />
+          <button
+            onClick={saveBusinessData}
+            style={{
+              width: "100%",
+              padding: 10,
+              background: "#1f7a3f",
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            Save Information
+          </button>
+        </div>
+      )}
     </div>
   );
 }
