@@ -83,7 +83,7 @@ export default function ChatApp() {
           fontWeight: "bold",
         }}
       >
-        HubBot
+        HOSPITAL BOT
       </div>
 
       {/* CHAT WINDOW */}
