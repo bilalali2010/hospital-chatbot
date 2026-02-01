@@ -1,4 +1,4 @@
-"use client"; // ensures client-side only
+"use client";
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -15,7 +15,6 @@ export default function ChatApp() {
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Ask for password if admin param is present
   useEffect(() => {
     if (isAdminParam) {
       const enteredPassword = prompt("Enter admin password:");
@@ -34,7 +33,6 @@ export default function ChatApp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, businessData })
       });
-
       const data = await res.json();
       setReply(data.reply);
     } catch (err) {
