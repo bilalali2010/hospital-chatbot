@@ -26,15 +26,14 @@ export default function ChatApp() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { role: "user", content: input };
-    setMessages((p) => [...p, userMessage]);
+    setMessages((p) => [...p, { role: "user", content: input }]);
     setInput("");
     setIsTyping(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMessage.content }),
+      body: JSON.stringify({ message: input }),
     });
 
     const data = await res.json();
@@ -55,7 +54,6 @@ export default function ChatApp() {
         password: "@supersecret",
       }),
     });
-
     alert(res.ok ? "Information saved" : "Save failed");
   };
 
@@ -102,7 +100,7 @@ export default function ChatApp() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Type your message..."
+          placeholder="Type your message…"
           style={styles.input}
         />
         <button onClick={sendMessage} style={styles.sendBtn}>
@@ -149,63 +147,63 @@ const styles = {
     height: "100vh",
     display: "flex",
     flexDirection: "column",
-    background: "#ffffff",
+    background: "#f8fbfd",
     fontFamily: "system-ui, -apple-system, BlinkMacSystemFont",
   },
   chatArea: {
     flex: 1,
     padding: "16px 12px",
     overflowY: "auto",
-    background: "#f7f8fa",
   },
   row: {
     display: "flex",
-    marginBottom: 10,
+    marginBottom: 12,
   },
   bubble: {
-    padding: "10px 14px",
+    padding: "11px 15px",
     borderRadius: 18,
     maxWidth: "78%",
     fontSize: 14.5,
-    lineHeight: 1.4,
+    lineHeight: 1.45,
   },
   userBubble: {
-    background: "#2563eb",
+    background: "#0f4c81",
     color: "#fff",
     borderBottomRightRadius: 4,
   },
   botBubble: {
-    background: "#e5e7eb",
-    color: "#111827",
+    background: "#e6f0fa",
+    color: "#0b2540",
     borderBottomLeftRadius: 4,
   },
   inputBar: {
     display: "flex",
     padding: 12,
-    borderTop: "1px solid #e5e7eb",
-    background: "#fff",
+    borderTop: "1px solid #dbe7f3",
+    background: "#ffffff",
   },
   input: {
     flex: 1,
-    padding: "10px 14px",
+    padding: "11px 14px",
     borderRadius: 20,
-    border: "1px solid #d1d5db",
+    border: "1px solid #cfe0f1",
     fontSize: 14,
+    outline: "none",
   },
   sendBtn: {
     marginLeft: 8,
-    padding: "0 16px",
+    padding: "0 18px",
     borderRadius: 20,
     border: "none",
-    background: "#2563eb",
+    background: "#0f4c81",
     color: "#fff",
     fontSize: 14,
     cursor: "pointer",
   },
   admin: {
     padding: 12,
-    borderTop: "1px solid #e5e7eb",
-    background: "#fafafa",
+    borderTop: "1px solid #dbe7f3",
+    background: "#f1f6fb",
   },
   textarea: {
     width: "100%",
@@ -217,7 +215,7 @@ const styles = {
     marginTop: 8,
     width: "100%",
     padding: 10,
-    background: "#111827",
+    background: "#0b2540",
     color: "#fff",
     border: "none",
     cursor: "pointer",
