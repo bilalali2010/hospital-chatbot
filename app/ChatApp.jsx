@@ -5,14 +5,14 @@ import { useSearchParams } from "next/navigation";
 
 const ADMIN_PASSWORD = "@supersecret";
 
-export default function HospitalChatApp() {
+export default function ChatApp() {
   const searchParams = useSearchParams();
   const isAdminParam = searchParams.get("admin") === "1";
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [hospitalData, setHospitalData] = useState(""); // hospital info
+  const [businessData, setBusinessData] = useState("");
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); // store chat history
   const [loading, setLoading] = useState(false);
   const [quickReplies, setQuickReplies] = useState([]);
   const chatEndRef = useRef(null);
@@ -24,13 +24,13 @@ export default function HospitalChatApp() {
 
   useEffect(scrollToBottom, [messages]);
 
-  // Load hospital data from localStorage
+  // Load business data
   useEffect(() => {
-    const savedData = localStorage.getItem("hospitalData") || "";
-    setHospitalData(savedData);
+    const savedData = localStorage.getItem("businessData") || "";
+    setBusinessData(savedData);
   }, []);
 
-  // Check admin password
+  // Admin password
   useEffect(() => {
     if (isAdminParam) {
       const enteredPassword = prompt("Enter admin password:");
@@ -39,14 +39,9 @@ export default function HospitalChatApp() {
     }
   }, [isAdminParam]);
 
-  // Save hospital data to localStorage
-  const saveHospitalData = () => {
-    if (!hospitalData.trim()) {
-      alert("Hospital information cannot be empty!");
-      return;
-    }
-    localStorage.setItem("hospitalData", hospitalData);
-    alert("Hospital information saved!");
+  const saveBusinessData = () => {
+    localStorage.setItem("businessData", businessData);
+    alert("Business information saved!");
   };
 
   // Send message to API
@@ -60,16 +55,13 @@ export default function HospitalChatApp() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg, hospitalData }),
+        body: JSON.stringify({ message: msg, businessData })
       });
       const data = await res.json();
       setMessages((prev) => [...prev, { type: "bot", text: data.reply }]);
-      setQuickReplies([]);
+      setQuickReplies([]); // can be updated to add dynamic quick replies if needed
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        { type: "bot", text: "Error: could not get response." },
-      ]);
+      setMessages((prev) => [...prev, { type: "bot", text: "Error: could not get response." }]);
     }
 
     setLoading(false);
@@ -104,22 +96,22 @@ export default function HospitalChatApp() {
           fontSize: 18,
         }}
       >
-        🏥 Hospital AI Chatbot
+        🤖 Business AI Chatbot
       </div>
 
       {/* Admin Panel */}
       {isAdmin && (
         <div style={{ padding: 10, background: "#e9ecef" }}>
-          <h4>🔐 Hospital Admin Panel</h4>
+          <h4>🔐 Admin Panel</h4>
           <textarea
-            placeholder="Paste hospital info here..."
+            placeholder="Paste business info here..."
             rows={4}
             style={{ width: "100%", borderRadius: 6, padding: 6 }}
-            value={hospitalData}
-            onChange={(e) => setHospitalData(e.target.value)}
+            value={businessData}
+            onChange={(e) => setBusinessData(e.target.value)}
           />
           <button
-            onClick={saveHospitalData}
+            onClick={saveBusinessData}
             style={{
               marginTop: 6,
               padding: 8,
@@ -131,7 +123,7 @@ export default function HospitalChatApp() {
               cursor: "pointer",
             }}
           >
-            💾 Save Hospital Information
+            💾 Save Information
           </button>
         </div>
       )}
@@ -195,12 +187,7 @@ export default function HospitalChatApp() {
           placeholder="Write a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          style={{
-            flex: 1,
-            padding: 10,
-            borderRadius: 12,
-            border: "1px solid #ccc",
-          }}
+          style={{ flex: 1, padding: 10, borderRadius: 12, border: "1px solid #ccc" }}
         />
         <button
           onClick={() => sendMessage()}
