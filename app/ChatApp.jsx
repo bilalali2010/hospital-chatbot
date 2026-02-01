@@ -15,6 +15,13 @@ export default function ChatApp() {
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Load business data from localStorage
+  useEffect(() => {
+    const savedData = localStorage.getItem("businessData") || "";
+    setBusinessData(savedData);
+  }, []);
+
+  // Admin password prompt
   useEffect(() => {
     if (isAdminParam) {
       const enteredPassword = prompt("Enter admin password:");
@@ -22,6 +29,12 @@ export default function ChatApp() {
       else alert("Wrong password");
     }
   }, [isAdminParam]);
+
+  // Save business data to localStorage
+  const saveBusinessData = () => {
+    localStorage.setItem("businessData", businessData);
+    alert("Business information saved!");
+  };
 
   const sendMessage = async () => {
     if (!message) return;
@@ -56,6 +69,12 @@ export default function ChatApp() {
             value={businessData}
             onChange={(e) => setBusinessData(e.target.value)}
           />
+          <button
+            onClick={saveBusinessData}
+            style={{ marginTop: 10, padding: 10, width: "100%" }}
+          >
+            💾 Save Information
+          </button>
           <hr />
         </>
       )}
@@ -82,4 +101,3 @@ export default function ChatApp() {
     </div>
   );
 }
- 
