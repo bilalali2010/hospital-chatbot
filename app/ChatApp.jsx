@@ -5,12 +5,12 @@ import { useSearchParams } from "next/navigation";
 
 const ADMIN_PASSWORD = "@supersecret";
 
-export default function ChatApp() {
+export default function HospitalChatApp() {
   const searchParams = useSearchParams();
   const isAdminParam = searchParams.get("admin") === "1";
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [hospitalData, setHospitalData] = useState(""); // renamed
+  const [hospitalData, setHospitalData] = useState(""); // hospital info
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,13 +24,13 @@ export default function ChatApp() {
 
   useEffect(scrollToBottom, [messages]);
 
-  // Load hospital data
+  // Load hospital data from localStorage
   useEffect(() => {
     const savedData = localStorage.getItem("hospitalData") || "";
     setHospitalData(savedData);
   }, []);
 
-  // Admin password
+  // Check admin password
   useEffect(() => {
     if (isAdminParam) {
       const enteredPassword = prompt("Enter admin password:");
@@ -39,7 +39,12 @@ export default function ChatApp() {
     }
   }, [isAdminParam]);
 
+  // Save hospital data to localStorage
   const saveHospitalData = () => {
+    if (!hospitalData.trim()) {
+      alert("Hospital information cannot be empty!");
+      return;
+    }
     localStorage.setItem("hospitalData", hospitalData);
     alert("Hospital information saved!");
   };
@@ -190,7 +195,12 @@ export default function ChatApp() {
           placeholder="Write a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          style={{ flex: 1, padding: 10, borderRadius: 12, border: "1px solid #ccc" }}
+          style={{
+            flex: 1,
+            padding: 10,
+            borderRadius: 12,
+            border: "1px solid #ccc",
+          }}
         />
         <button
           onClick={() => sendMessage()}
