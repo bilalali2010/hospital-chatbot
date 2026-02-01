@@ -1,7 +1,7 @@
-"use client"; // ensure client-side rendering
+"use client";
 
-import ChatApp from "./ChatApp"; // import the new component
+import ChatApp from "./ChatApp";
 
 export default function Page() {
-  return <ChatApp />; // render the ChatApp component
+  return <ChatApp />;
 }
