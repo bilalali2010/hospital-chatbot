@@ -26,7 +26,7 @@ ${businessData || "No data provided."}
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "mistralai/mistral-7b-instruct:free",
+      model: "arcee-ai/trinity-large-preview:free",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message },
