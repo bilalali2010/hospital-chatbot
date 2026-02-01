@@ -1,7 +1,8 @@
 {
-  "name": "ai-business-chatbot",
+  "name": "ai_business_chatbot",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
