@@ -1,0 +1,213 @@
+{
+  "hospital_info": {
+    "name": "Demo Hospital Center",
+    "type": "Private multi-specialty hospital",
+    "opd_timings": "9:00 AM to 9:00 PM",
+    "emergency_services": "Available 24/7",
+    "services_provided": [
+      "Consultation",
+      "Diagnostics",
+      "Emergency care",
+      "Inpatient services"
+    ]
+  },
+
+  "departments": {
+    "general_medicine": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Ahmed Raza",
+          "timing": "10:00 AM to 2:00 PM",
+          "fee_pkr": 2000
+        },
+        {
+          "name": "Dr. Hina Qureshi",
+          "timing": "5:00 PM to 8:00 PM",
+          "fee_pkr": 1800
+        }
+      ]
+    },
+
+    "cardiology": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Sana Khalid",
+          "timing": "4:00 PM to 8:00 PM",
+          "fee_pkr": 3500
+        },
+        {
+          "name": "Dr. Ali Hassan",
+          "timing": "6:00 PM to 9:00 PM",
+          "fee_pkr": 3000
+        }
+      ],
+      "facilities": ["ECG", "ECHO", "Cardiac screening"]
+    },
+
+    "gynecology_obstetrics": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Ayesha Malik",
+          "timing": "11:00 AM to 3:00 PM",
+          "fee_pkr": 2500
+        },
+        {
+          "name": "Dr. Maryam Iqbal",
+          "timing": "6:00 PM to 9:00 PM",
+          "fee_pkr": 2800
+        }
+      ],
+      "services": [
+        "Pregnancy checkups",
+        "Ultrasound",
+        "Delivery care"
+      ]
+    },
+
+    "pediatrics": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Usman Tariq",
+          "timing": "5:00 PM to 9:00 PM",
+          "fee_pkr": 2200
+        },
+        {
+          "name": "Dr. Farah Khan",
+          "timing": "10:00 AM to 1:00 PM",
+          "fee_pkr": 2400
+        }
+      ],
+      "services": [
+        "Vaccination",
+        "Child growth monitoring"
+      ]
+    },
+
+    "orthopedics": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Bilal Hussain",
+          "timing": "6:00 PM to 9:00 PM",
+          "fee_pkr": 3000
+        },
+        {
+          "name": "Dr. Kamran Shah",
+          "timing": "3:00 PM to 6:00 PM",
+          "fee_pkr": 2700
+        }
+      ],
+      "services": [
+        "Fracture treatment",
+        "Joint pain treatment",
+        "Arthritis care"
+      ]
+    },
+
+    "neurology": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Fahad Noor",
+          "timing": "4:00 PM to 8:00 PM",
+          "fee_pkr": 4000
+        }
+      ],
+      "services": [
+        "Headache treatment",
+        "Seizure management",
+        "Nerve disorder treatment"
+      ]
+    },
+
+    "ophthalmology": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Saad Ahmed",
+          "timing": "11:00 AM to 2:00 PM",
+          "fee_pkr": 2200
+        }
+      ],
+      "services": [
+        "Eye checkups",
+        "Vision testing",
+        "Eye infection treatment"
+      ]
+    },
+
+    "dental": {
+      "available": true,
+      "doctors": [
+        {
+          "name": "Dr. Rabia Saleem",
+          "timing": "2:00 PM to 7:00 PM",
+          "fee_pkr": 1500
+        }
+      ],
+      "services": [
+        "Dental cleaning",
+        "Fillings",
+        "Tooth extraction"
+      ]
+    }
+  },
+
+  "diagnostic_lab_services": {
+    "available": true,
+    "tests": [
+      "Blood tests",
+      "Urine tests",
+      "Sugar tests"
+    ],
+    "imaging": [
+      "ECG",
+      "X-ray",
+      "Ultrasound",
+      "CT scan",
+      "MRI"
+    ]
+  },
+
+  "emergency": {
+    "available": true,
+    "timings": "24/7",
+    "services": [
+      "Accident handling",
+      "Trauma care",
+      "Critical medical care",
+      "Ambulance service"
+    ]
+  },
+
+  "admission_rooms": {
+    "available": true,
+    "room_types": [
+      "General ward",
+      "Semi-private room",
+      "Private room",
+      "ICU"
+    ],
+    "staff": "Trained nursing staff available"
+  },
+
+  "payment_insurance": {
+    "payment_methods": ["Cash", "Card"],
+    "insurance": "Selected insurance providers accepted",
+    "policy": "Payment required after consultation or services"
+  },
+
+  "pharmacy": {
+    "available": true,
+    "details": "In-house pharmacy with prescribed medicines available during hospital hours"
+  },
+
+  "chatbot_rules": {
+    "appointment_booking": "This chatbot does not support appointment booking.",
+    "missing_information_reply": "I don't have that information yet."
+  }
+}
