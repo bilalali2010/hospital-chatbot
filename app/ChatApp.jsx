@@ -1,24 +1,30 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function ChatApp() {
-  const [messages, setMessages] = useState([]);
+  const searchParams = useSearchParams();
+  const isAdmin = searchParams.get("admin") === "1";
+
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: "Hello! How can I help you today?"
+    }
+  ]);
+
   const [input, setInput] = useState("");
-  const [typing, setTyping] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [knowledge, setKnowledge] = useState("");
 
-  useEffect(() => {
-    setMessages([
-      { role: "bot", text: "Hello! How can I help you today?" }
-    ]);
-  }, []);
-
-  const sendMessage = async () => {
+  async function sendMessage() {
     if (!input.trim()) return;
 
-    const userMsg = { role: "user", text: input };
-    setMessages(prev => [...prev, userMsg]);
+    const userMsg = { role: "user", content: input };
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
-    setTyping(true);
+    setLoading(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -27,51 +33,142 @@ export default function ChatApp() {
     });
 
     const data = await res.json();
-    setTyping(false);
 
-    setMessages(prev => [...prev, { role: "bot", text: data.reply }]);
-  };
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: data.reply }
+    ]);
+
+    setLoading(false);
+  }
 
   return (
-    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg flex flex-col">
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+    <div style={styles.wrapper}>
+      <div style={styles.chatBox}>
+        <div style={styles.messages}>
           {messages.map((m, i) => (
             <div
               key={i}
-              className={`px-4 py-2 rounded-2xl max-w-[80%] ${
-                m.role === "user"
-                  ? "bg-blue-600 text-white ml-auto"
-                  : "bg-gray-200 text-black"
-              }`}
+              style={{
+                ...styles.bubble,
+                ...(m.role === "user"
+                  ? styles.userBubble
+                  : styles.botBubble)
+              }}
             >
-              {m.text}
+              {m.content}
             </div>
           ))}
 
-          {typing && (
-            <div className="bg-gray-200 px-4 py-2 rounded-2xl w-fit animate-pulse">
-              Typing...
+          {loading && (
+            <div style={{ ...styles.bubble, ...styles.botBubble }}>
+              Typing…
             </div>
           )}
         </div>
 
-        <div className="p-3 border-t flex gap-2">
+        <div style={styles.inputBox}>
           <input
-            className="flex-1 border rounded-full px-4 py-2 outline-none"
-            placeholder="Ask something..."
             value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && sendMessage()}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            style={styles.input}
           />
-          <button
-            onClick={sendMessage}
-            className="bg-blue-600 text-white px-4 rounded-full"
-          >
+          <button onClick={sendMessage} style={styles.button}>
             Send
           </button>
         </div>
       </div>
+
+      {isAdmin && (
+        <div style={styles.adminPanel}>
+          <h3>Admin Knowledge Panel</h3>
+          <p>
+            Knowledge is loaded from <b>data/hospital.json</b>
+          </p>
+          <textarea
+            value={knowledge}
+            onChange={(e) => setKnowledge(e.target.value)}
+            placeholder="Edit hospital.json in GitHub to update data"
+            style={styles.textarea}
+          />
+        </div>
+      )}
     </div>
   );
 }
+
+const styles = {
+  wrapper: {
+    display: "flex",
+    justifyContent: "center",
+    padding: 20,
+    background: "#f2f6f9",
+    minHeight: "100vh"
+  },
+  chatBox: {
+    width: "100%",
+    maxWidth: 420,
+    background: "#ffffff",
+    borderRadius: 12,
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+  },
+  messages: {
+    flex: 1,
+    padding: 16,
+    overflowY: "auto"
+  },
+  bubble: {
+    padding: "10px 14px",
+    borderRadius: 14,
+    marginBottom: 10,
+    maxWidth: "80%",
+    fontSize: 14,
+    lineHeight: 1.4
+  },
+  userBubble: {
+    background: "#0d6efd",
+    color: "#fff",
+    alignSelf: "flex-end"
+  },
+  botBubble: {
+    background: "#e9f1f8",
+    color: "#000",
+    alignSelf: "flex-start"
+  },
+  inputBox: {
+    display: "flex",
+    padding: 12,
+    borderTop: "1px solid #ddd"
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 8,
+    border: "1px solid #ccc"
+  },
+  button: {
+    marginLeft: 8,
+    padding: "0 16px",
+    borderRadius: 8,
+    border: "none",
+    background: "#0d6efd",
+    color: "#fff",
+    cursor: "pointer"
+  },
+  adminPanel: {
+    marginLeft: 20,
+    width: 300,
+    background: "#fff",
+    padding: 16,
+    borderRadius: 12,
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+  },
+  textarea: {
+    width: "100%",
+    height: 200,
+    marginTop: 10
+  }
+};
