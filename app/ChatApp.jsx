@@ -12,7 +12,8 @@ export default function ChatApp() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hello 👋 I’m here to help you. Please choose a department or ask a question.",
+      content:
+        "Hello 👋 I’m here to help you. Please choose a department or ask a question.",
       isWelcome: true,
       time: new Date()
     }
@@ -33,9 +34,8 @@ export default function ChatApp() {
       ...prev,
       { role: "user", content: text, time: new Date() }
     ]);
-
-    setLoading(true);
     setInput("");
+    setLoading(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -113,7 +113,7 @@ export default function ChatApp() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input Bar (STICKY) */}
       <div style={styles.inputBar}>
         <input
           value={input}
@@ -156,12 +156,13 @@ const styles = {
     color: "#fff",
     fontSize: 16,
     fontWeight: 600,
-    textAlign: "center"
+    textAlign: "center",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)"
   },
 
   messages: {
     flex: 1,
-    padding: "14px 12px",
+    padding: "14px 12px 90px", // ✅ space for sticky input
     overflowY: "auto"
   },
 
@@ -175,8 +176,7 @@ const styles = {
     padding: "12px 14px",
     borderRadius: 18,
     fontSize: 15,
-    lineHeight: 1.55,
-    transition: "none" // prevent jumping
+    lineHeight: 1.55
   },
 
   botBubble: {
@@ -226,10 +226,14 @@ const styles = {
   },
 
   inputBar: {
+    position: "sticky",
+    bottom: 0,
     display: "flex",
     padding: 10,
     borderTop: "1px solid #e5e7eb",
-    background: "#ffffff"
+    background: "#ffffff",
+    zIndex: 10,
+    boxShadow: "0 -2px 8px rgba(0,0,0,0.05)"
   },
 
   input: {
