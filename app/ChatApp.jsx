@@ -46,7 +46,8 @@ export default function ChatApp() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.chatCard}>
+      {/* Chat container stretched full screen */}
+      <div style={styles.chatContainer}>
         {/* Header */}
         <div style={styles.header}>
           <span style={styles.headerText}>We are online!</span>
@@ -126,25 +127,19 @@ export default function ChatApp() {
 const styles = {
   page: {
     height: "100vh",
+    width: "100vw",
+    background: "linear-gradient(135deg, #e8f4ff, #f7fbff)",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    background: "linear-gradient(135deg, #e8f4ff, #f7fbff)",
-    padding: 12
+    alignItems: "stretch", // stretch full height
+    overflow: "hidden",
+    flexDirection: "column"
   },
 
-  chatCard: {
-    width: "100%",
-    maxWidth: 420,
-    height: "100%",
-    maxHeight: 640,
-    background: "#ffffff",
-    borderRadius: 16,
+  chatContainer: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
-    boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
-    overflow: "hidden",
-    transition: "all 0.3s ease"
   },
 
   header: {
@@ -167,9 +162,8 @@ const styles = {
     flex: 1,
     padding: 16,
     overflowY: "auto",
-    background: "#f9fcff",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
 
   bubble: {
