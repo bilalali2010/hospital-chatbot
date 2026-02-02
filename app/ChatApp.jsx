@@ -15,7 +15,6 @@ export default function ChatApp() {
 
   const messagesEndRef = useRef(null);
 
-  // Scroll to latest message automatically
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -43,7 +42,6 @@ export default function ChatApp() {
     setLoading(false);
   }
 
-  // Example quick action buttons (departments)
   const quickActions = ["Cardiology", "Pediatrics", "Neurology", "Orthopedics"];
 
   return (
@@ -51,12 +49,7 @@ export default function ChatApp() {
       <div style={styles.chatCard}>
         {/* Header */}
         <div style={styles.header}>
-          <img
-            src="/hospital-logo.png"
-            alt="Hospital Logo"
-            style={styles.logo}
-          />
-          <span>We are online!</span>
+          <span style={styles.headerText}>We are online!</span>
         </div>
 
         {/* Messages */}
@@ -69,7 +62,12 @@ export default function ChatApp() {
                 ...(m.role === "user" ? styles.userBubble : styles.botBubble)
               }}
             >
-              {m.content}
+              <span
+                style={m.role === "assistant" ? styles.botMessageText : styles.userMessageText}
+              >
+                {m.content}
+              </span>
+
               {m.role === "assistant" && quickActions.length > 0 && (
                 <div style={styles.quickActions}>
                   {quickActions.map((action, idx) => (
@@ -88,7 +86,7 @@ export default function ChatApp() {
 
           {loading && (
             <div style={{ ...styles.bubble, ...styles.botBubble }}>
-              Typing…
+              <span style={styles.botMessageText}>Typing…</span>
             </div>
           )}
           <div ref={messagesEndRef} />
@@ -152,19 +150,17 @@ const styles = {
   header: {
     background: "#0d6efd",
     color: "#fff",
-    padding: "12px 16px",
+    padding: "14px 16px",
     display: "flex",
     alignItems: "center",
-    gap: 8,
-    fontWeight: 500,
-    fontSize: 16
+    justifyContent: "center"
   },
 
-  logo: {
-    width: 30,
-    height: 30,
-    borderRadius: "50%",
-    objectFit: "cover"
+  headerText: {
+    fontSize: 18,
+    fontWeight: 600,
+    letterSpacing: 0.5,
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
   },
 
   messages: {
@@ -177,11 +173,9 @@ const styles = {
   },
 
   bubble: {
-    padding: "10px 14px",
-    borderRadius: 14,
+    padding: "12px 16px",
+    borderRadius: 18,
     marginBottom: 10,
-    fontSize: 14,
-    lineHeight: 1.45,
     maxWidth: "80%",
     transition: "all 0.2s ease"
   },
@@ -196,6 +190,20 @@ const styles = {
     alignSelf: "flex-start",
     background: "#e6f2ff",
     color: "#000"
+  },
+
+  userMessageText: {
+    fontSize: 14,
+    fontWeight: 500,
+    lineHeight: 1.5,
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+  },
+
+  botMessageText: {
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: 1.5,
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
   },
 
   quickActions: {
@@ -213,6 +221,7 @@ const styles = {
     color: "#0d6efd",
     cursor: "pointer",
     fontSize: 13,
+    fontWeight: 500,
     transition: "all 0.2s ease",
   },
 
@@ -229,7 +238,8 @@ const styles = {
     borderRadius: 10,
     border: "1px solid #ccc",
     fontSize: 14,
-    outline: "none"
+    outline: "none",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
   },
 
   sendBtn: {
