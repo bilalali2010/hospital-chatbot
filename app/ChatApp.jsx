@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function ChatApp() {
@@ -8,22 +8,30 @@ export default function ChatApp() {
   const isAdmin = searchParams.get("admin") === "1";
 
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! How can I help you today?" }
+    { role: "assistant", content: "Hi 👋 How can I help you today?" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function sendMessage() {
-    if (!input.trim()) return;
+  const messagesEndRef = useRef(null);
 
-    setMessages((prev) => [...prev, { role: "user", content: input }]);
+  // Scroll to latest message automatically
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
+  async function sendMessage(msg = null) {
+    const messageToSend = msg || input.trim();
+    if (!messageToSend) return;
+
+    setMessages((prev) => [...prev, { role: "user", content: messageToSend }]);
     setInput("");
     setLoading(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input })
+      body: JSON.stringify({ message: messageToSend })
     });
 
     const data = await res.json();
@@ -35,22 +43,46 @@ export default function ChatApp() {
     setLoading(false);
   }
 
+  // Example quick action buttons (departments)
+  const quickActions = ["Cardiology", "Pediatrics", "Neurology", "Orthopedics"];
+
   return (
     <div style={styles.page}>
       <div style={styles.chatCard}>
-        {/* Chat messages */}
+        {/* Header */}
+        <div style={styles.header}>
+          <img
+            src="/hospital-logo.png"
+            alt="Hospital Logo"
+            style={styles.logo}
+          />
+          <span>We are online!</span>
+        </div>
+
+        {/* Messages */}
         <div style={styles.messages}>
           {messages.map((m, i) => (
             <div
               key={i}
               style={{
                 ...styles.bubble,
-                ...(m.role === "user"
-                  ? styles.userBubble
-                  : styles.botBubble)
+                ...(m.role === "user" ? styles.userBubble : styles.botBubble)
               }}
             >
               {m.content}
+              {m.role === "assistant" && quickActions.length > 0 && (
+                <div style={styles.quickActions}>
+                  {quickActions.map((action, idx) => (
+                    <button
+                      key={idx}
+                      style={styles.quickActionBtn}
+                      onClick={() => sendMessage(action)}
+                    >
+                      {action}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 
@@ -59,21 +91,25 @@ export default function ChatApp() {
               Typing…
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
-        {/* Input bar */}
+        {/* Input Bar */}
         <div style={styles.inputBar}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message here…"
+            placeholder="Enter your message…"
             style={styles.input}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
-          <button onClick={sendMessage} style={styles.sendBtn}>
+          <button onClick={() => sendMessage()} style={styles.sendBtn}>
             Send
           </button>
         </div>
+
+        {/* Footer Branding */}
+        <div style={styles.footer}>Powered by Bilal AI Studio</div>
       </div>
 
       {isAdmin && (
@@ -109,14 +145,35 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
-    overflow: "hidden"
+    overflow: "hidden",
+    transition: "all 0.3s ease"
+  },
+
+  header: {
+    background: "#0d6efd",
+    color: "#fff",
+    padding: "12px 16px",
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    fontWeight: 500,
+    fontSize: 16
+  },
+
+  logo: {
+    width: 30,
+    height: 30,
+    borderRadius: "50%",
+    objectFit: "cover"
   },
 
   messages: {
     flex: 1,
     padding: 16,
     overflowY: "auto",
-    background: "#f9fcff"
+    background: "#f9fcff",
+    display: "flex",
+    flexDirection: "column"
   },
 
   bubble: {
@@ -125,7 +182,8 @@ const styles = {
     marginBottom: 10,
     fontSize: 14,
     lineHeight: 1.45,
-    maxWidth: "80%"
+    maxWidth: "80%",
+    transition: "all 0.2s ease"
   },
 
   userBubble: {
@@ -138,6 +196,24 @@ const styles = {
     alignSelf: "flex-start",
     background: "#e6f2ff",
     color: "#000"
+  },
+
+  quickActions: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 6,
+    marginTop: 8
+  },
+
+  quickActionBtn: {
+    padding: "6px 12px",
+    borderRadius: 12,
+    border: "1px solid #0d6efd",
+    background: "#ffffff",
+    color: "#0d6efd",
+    cursor: "pointer",
+    fontSize: 13,
+    transition: "all 0.2s ease",
   },
 
   inputBar: {
@@ -165,6 +241,13 @@ const styles = {
     color: "#fff",
     fontWeight: 500,
     cursor: "pointer"
+  },
+
+  footer: {
+    textAlign: "center",
+    fontSize: 12,
+    color: "#555",
+    padding: 6
   },
 
   adminNote: {
