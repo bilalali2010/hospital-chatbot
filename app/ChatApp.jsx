@@ -1,223 +1,77 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ChatApp() {
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! How can I help you today?" },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [businessData, setBusinessData] = useState("");
-  const chatEndRef = useRef(null);
+  const [typing, setTyping] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("admin") === "1") {
-      const pwd = prompt("Enter admin password");
-      if (pwd === "@supersecret") setIsAdmin(true);
-    }
+    setMessages([
+      { role: "bot", text: "Hello! How can I help you today?" }
+    ]);
   }, []);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    setMessages((p) => [...p, { role: "user", content: input }]);
+    const userMsg = { role: "user", text: input };
+    setMessages(prev => [...prev, userMsg]);
     setInput("");
-    setIsTyping(true);
+    setTyping(true);
 
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
+      body: JSON.stringify({ message: input })
     });
 
     const data = await res.json();
-    setIsTyping(false);
+    setTyping(false);
 
-    setMessages((p) => [
-      ...p,
-      { role: "assistant", content: data.reply },
-    ]);
-  };
-
-  const saveBusinessData = async () => {
-    const res = await fetch("/api/admin/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        businessData,
-        password: "@supersecret",
-      }),
-    });
-    alert(res.ok ? "Information saved" : "Save failed");
+    setMessages(prev => [...prev, { role: "bot", text: data.reply }]);
   };
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.chatArea}>
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            style={{
-              ...styles.row,
-              justifyContent:
-                m.role === "user" ? "flex-end" : "flex-start",
-            }}
-          >
+    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg flex flex-col">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {messages.map((m, i) => (
             <div
-              style={{
-                ...styles.bubble,
-                ...(m.role === "user"
-                  ? styles.userBubble
-                  : styles.botBubble),
-              }}
+              key={i}
+              className={`px-4 py-2 rounded-2xl max-w-[80%] ${
+                m.role === "user"
+                  ? "bg-blue-600 text-white ml-auto"
+                  : "bg-gray-200 text-black"
+              }`}
             >
-              {m.content}
+              {m.text}
             </div>
-          </div>
-        ))}
+          ))}
 
-        {isTyping && (
-          <div style={styles.row}>
-            <div style={styles.botBubble}>
-              <span className="dot">.</span>
-              <span className="dot">.</span>
-              <span className="dot">.</span>
+          {typing && (
+            <div className="bg-gray-200 px-4 py-2 rounded-2xl w-fit animate-pulse">
+              Typing...
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        <div ref={chatEndRef} />
-      </div>
-
-      <div style={styles.inputBar}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Type your message…"
-          style={styles.input}
-        />
-        <button onClick={sendMessage} style={styles.sendBtn}>
-          Send
-        </button>
-      </div>
-
-      {isAdmin && (
-        <div style={styles.admin}>
-          <textarea
-            value={businessData}
-            onChange={(e) => setBusinessData(e.target.value)}
-            placeholder="Paste hospital information here"
-            style={styles.textarea}
+        <div className="p-3 border-t flex gap-2">
+          <input
+            className="flex-1 border rounded-full px-4 py-2 outline-none"
+            placeholder="Ask something..."
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && sendMessage()}
           />
-          <button onClick={saveBusinessData} style={styles.saveBtn}>
-            Save Information
+          <button
+            onClick={sendMessage}
+            className="bg-blue-600 text-white px-4 rounded-full"
+          >
+            Send
           </button>
         </div>
-      )}
-
-      <style>{`
-        .dot {
-          animation: blink 1.4s infinite both;
-          font-size: 22px;
-        }
-        .dot:nth-child(2) { animation-delay: .2s; }
-        .dot:nth-child(3) { animation-delay: .4s; }
-
-        @keyframes blink {
-          0% { opacity: .2 }
-          20% { opacity: 1 }
-          100% { opacity: .2 }
-        }
-      `}</style>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  wrapper: {
-    maxWidth: 420,
-    margin: "0 auto",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    background: "#f8fbfd",
-    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont",
-  },
-  chatArea: {
-    flex: 1,
-    padding: "16px 12px",
-    overflowY: "auto",
-  },
-  row: {
-    display: "flex",
-    marginBottom: 12,
-  },
-  bubble: {
-    padding: "11px 15px",
-    borderRadius: 18,
-    maxWidth: "78%",
-    fontSize: 14.5,
-    lineHeight: 1.45,
-  },
-  userBubble: {
-    background: "#0f4c81",
-    color: "#fff",
-    borderBottomRightRadius: 4,
-  },
-  botBubble: {
-    background: "#e6f0fa",
-    color: "#0b2540",
-    borderBottomLeftRadius: 4,
-  },
-  inputBar: {
-    display: "flex",
-    padding: 12,
-    borderTop: "1px solid #dbe7f3",
-    background: "#ffffff",
-  },
-  input: {
-    flex: 1,
-    padding: "11px 14px",
-    borderRadius: 20,
-    border: "1px solid #cfe0f1",
-    fontSize: 14,
-    outline: "none",
-  },
-  sendBtn: {
-    marginLeft: 8,
-    padding: "0 18px",
-    borderRadius: 20,
-    border: "none",
-    background: "#0f4c81",
-    color: "#fff",
-    fontSize: 14,
-    cursor: "pointer",
-  },
-  admin: {
-    padding: 12,
-    borderTop: "1px solid #dbe7f3",
-    background: "#f1f6fb",
-  },
-  textarea: {
-    width: "100%",
-    height: 110,
-    padding: 10,
-    fontSize: 13,
-  },
-  saveBtn: {
-    marginTop: 8,
-    width: "100%",
-    padding: 10,
-    background: "#0b2540",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-  },
-};
