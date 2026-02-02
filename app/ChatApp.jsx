@@ -8,10 +8,15 @@ export default function ChatApp() {
   const isAdmin = searchParams.get("admin") === "1";
 
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi 👋 How can I help you today?" }
+    {
+      role: "assistant",
+      content: "Hi 👋 How can I help you today?",
+      time: new Date()
+    }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -23,7 +28,10 @@ export default function ChatApp() {
     const messageToSend = msg || input.trim();
     if (!messageToSend) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: messageToSend }]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: messageToSend, time: new Date() }
+    ]);
     setInput("");
     setLoading(true);
 
@@ -37,64 +45,87 @@ export default function ChatApp() {
 
     setMessages((prev) => [
       ...prev,
-      { role: "assistant", content: data.reply }
+      { role: "assistant", content: data.reply, time: new Date() }
     ]);
     setLoading(false);
   }
 
   const quickActions = ["Cardiology", "Pediatrics", "Neurology", "Orthopedics"];
 
+  const theme = darkMode ? dark : light;
+
   return (
-    <div style={styles.page}>
-      {/* Chat container stretched full screen */}
+    <div style={{ ...styles.page, background: theme.page }}>
       <div style={styles.chatContainer}>
         {/* Header */}
-        <div style={styles.header}>
-          <span style={styles.headerText}>We are online!</span>
+        <div style={{ ...styles.header, background: theme.header }}>
+          <span style={styles.headerText}>We are online</span>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            style={styles.darkToggle}
+            title="Toggle dark mode"
+          >
+            {darkMode ? "☀️" : "🌙"}
+          </button>
         </div>
 
         {/* Messages */}
-        <div style={styles.messages}>
+        <div style={{ ...styles.messages, background: theme.messages }}>
           {messages.map((m, i) => (
             <div
               key={i}
               style={{
-                ...styles.bubble,
-                ...(m.role === "user" ? styles.userBubble : styles.botBubble)
+                ...styles.bubbleWrapper,
+                justifyContent:
+                  m.role === "user" ? "flex-end" : "flex-start"
               }}
             >
-              <span
-                style={m.role === "assistant" ? styles.botMessageText : styles.userMessageText}
+              <div
+                style={{
+                  ...styles.bubble,
+                  background:
+                    m.role === "user" ? theme.userBubble : theme.botBubble,
+                  color: theme.text
+                }}
               >
-                {m.content}
-              </span>
-
-              {m.role === "assistant" && quickActions.length > 0 && (
-                <div style={styles.quickActions}>
-                  {quickActions.map((action, idx) => (
-                    <button
-                      key={idx}
-                      style={styles.quickActionBtn}
-                      onClick={() => sendMessage(action)}
-                    >
-                      {action}
-                    </button>
-                  ))}
+                <div style={styles.messageText}>{m.content}</div>
+                <div style={styles.time}>
+                  {m.time.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })}
                 </div>
-              )}
+
+                {m.role === "assistant" && (
+                  <div style={styles.quickActions}>
+                    {quickActions.map((q) => (
+                      <button
+                        key={q}
+                        style={styles.quickActionBtn}
+                        onClick={() => sendMessage(q)}
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
 
           {loading && (
-            <div style={{ ...styles.bubble, ...styles.botBubble }}>
-              <span style={styles.botMessageText}>Typing…</span>
+            <div style={styles.bubbleWrapper}>
+              <div style={{ ...styles.bubble, background: theme.botBubble }}>
+                <TypingDots />
+              </div>
             </div>
           )}
+
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Bar */}
-        <div style={styles.inputBar}>
+        {/* Input */}
+        <div style={{ ...styles.inputBar, background: theme.input }}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -107,97 +138,101 @@ export default function ChatApp() {
           </button>
         </div>
 
-        {/* Footer Branding */}
         <div style={styles.footer}>Powered by Bilal AI Studio</div>
       </div>
-
-      {isAdmin && (
-        <div style={styles.adminNote}>
-          <b>Admin Mode:</b>  
-          Knowledge is loaded from <code>data/hospital.json</code>.  
-          Edit that file and redeploy to update information.
-        </div>
-      )}
     </div>
   );
 }
 
-/* ---------------- STYLES ---------------- */
+/* ---------- Typing Animation ---------- */
+function TypingDots() {
+  return <span style={styles.dots}>Typing<span>.</span><span>.</span><span>.</span></span>;
+}
 
+/* ---------- THEMES ---------- */
+const light = {
+  page: "#ffffff",
+  header: "#0d6efd",
+  messages: "#ffffff",
+  userBubble: "#0d6efd",
+  botBubble: "#e6f2ff",
+  input: "#ffffff",
+  text: "#000"
+};
+
+const dark = {
+  page: "#0f172a",
+  header: "#020617",
+  messages: "#020617",
+  userBubble: "#2563eb",
+  botBubble: "#1e293b",
+  input: "#020617",
+  text: "#f8fafc"
+};
+
+/* ---------- STYLES ---------- */
 const styles = {
   page: {
     height: "100vh",
     width: "100vw",
-    background: "linear-gradient(135deg, #e8f4ff, #f7fbff)",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "stretch", // stretch full height
-    overflow: "hidden",
     flexDirection: "column"
   },
 
   chatContainer: {
     flex: 1,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
 
   header: {
-    background: "#0d6efd",
-    color: "#fff",
     padding: "14px 16px",
+    color: "#fff",
+    fontSize: 17,
+    fontWeight: 600,
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center"
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)"
   },
 
-  headerText: {
+  headerText: { letterSpacing: 0.4 },
+
+  darkToggle: {
+    background: "transparent",
+    border: "none",
     fontSize: 18,
-    fontWeight: 600,
-    letterSpacing: 0.5,
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    cursor: "pointer",
+    color: "#fff"
   },
 
   messages: {
     flex: 1,
     padding: 16,
-    overflowY: "auto",
+    overflowY: "auto"
+  },
+
+  bubbleWrapper: {
     display: "flex",
-    flexDirection: "column",
+    marginBottom: 12
   },
 
   bubble: {
-    padding: "12px 16px",
+    maxWidth: "75%",
+    padding: "10px 14px",
     borderRadius: 18,
-    marginBottom: 10,
-    maxWidth: "80%",
-    transition: "all 0.2s ease"
+    fontSize: 14
   },
 
-  userBubble: {
-    alignSelf: "flex-end",
-    background: "#0d6efd",
-    color: "#fff"
+  messageText: {
+    lineHeight: 1.5
   },
 
-  botBubble: {
-    alignSelf: "flex-start",
-    background: "#e6f2ff",
-    color: "#000"
-  },
-
-  userMessageText: {
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.5,
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-  },
-
-  botMessageText: {
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: 1.5,
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+  time: {
+    fontSize: 11,
+    opacity: 0.6,
+    marginTop: 4,
+    textAlign: "right"
   },
 
   quickActions: {
@@ -208,22 +243,19 @@ const styles = {
   },
 
   quickActionBtn: {
-    padding: "6px 12px",
+    padding: "5px 10px",
     borderRadius: 12,
     border: "1px solid #0d6efd",
-    background: "#ffffff",
-    color: "#0d6efd",
+    background: "#fff",
     cursor: "pointer",
-    fontSize: 13,
-    fontWeight: 500,
-    transition: "all 0.2s ease",
+    fontSize: 12
   },
 
   inputBar: {
     display: "flex",
     padding: 12,
-    borderTop: "1px solid #e0e0e0",
-    background: "#ffffff"
+    borderTop: "1px solid #ddd",
+    boxShadow: "0 -2px 6px rgba(0,0,0,0.06)"
   },
 
   input: {
@@ -231,33 +263,28 @@ const styles = {
     padding: 10,
     borderRadius: 10,
     border: "1px solid #ccc",
-    fontSize: 14,
-    outline: "none",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    fontSize: 14
   },
 
   sendBtn: {
     marginLeft: 8,
-    padding: "0 16px",
+    padding: "0 18px",
     borderRadius: 10,
     border: "none",
     background: "#0d6efd",
     color: "#fff",
-    fontWeight: 500,
     cursor: "pointer"
   },
 
   footer: {
     textAlign: "center",
     fontSize: 12,
-    color: "#555",
-    padding: 6
+    padding: 6,
+    opacity: 0.6
   },
 
-  adminNote: {
-    marginTop: 10,
-    fontSize: 12,
-    color: "#444",
-    textAlign: "center"
+  dots: {
+    fontSize: 14,
+    letterSpacing: 2
   }
 };
