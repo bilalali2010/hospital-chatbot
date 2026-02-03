@@ -12,7 +12,8 @@ export default function ChatApp() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hello 👋 How can I help you today?",
+      content:
+        "Hello 👋 I’m here to help you. Please choose a department or ask a question.",
       isWelcome: true,
       time: new Date()
     }
@@ -27,7 +28,7 @@ export default function ChatApp() {
   }, [messages, loading]);
 
   async function sendMessage(text) {
-    if (!text.trim()) return;
+    if (!text?.trim()) return;
 
     setMessages((prev) => [
       ...prev,
@@ -53,90 +54,86 @@ export default function ChatApp() {
   }
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.chatBox}>
-        {/* Header */}
-        <div style={styles.header}>
-          <span style={styles.dot} />
-          <span>Hospital AI Assistant</span>
-        </div>
+    <div style={styles.page}>
+      {/* Header */}
+      <div style={styles.header}>We are online</div>
 
-        {/* Messages */}
-        <div style={styles.messages}>
-          {messages.map((m, i) => (
+      {/* Messages */}
+      <div style={styles.messages}>
+        {messages.map((m, i) => (
+          <div
+            key={i}
+            style={{
+              ...styles.row,
+              justifyContent: m.role === "user" ? "flex-end" : "flex-start"
+            }}
+          >
             <div
-              key={i}
               style={{
-                ...styles.row,
-                justifyContent:
-                  m.role === "user" ? "flex-end" : "flex-start"
+                ...styles.bubble,
+                ...(m.role === "user"
+                  ? styles.userBubble
+                  : styles.botBubble)
               }}
             >
-              <div
-                style={{
-                  ...styles.bubble,
-                  ...(m.role === "user"
-                    ? styles.userBubble
-                    : styles.botBubble)
-                }}
-              >
-                {m.content}
+              <div style={styles.text}>{m.content}</div>
 
-                {m.isWelcome && (
-                  <div style={styles.quickWrap}>
-                    {QUICK_OPTIONS.map((opt) => (
-                      <button
-                        key={opt}
-                        style={styles.quickBtn}
-                        onClick={() => sendMessage(opt)}
-                      >
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {loading && (
-            <div style={styles.row}>
-              <div style={{ ...styles.bubble, ...styles.botBubble }}>
-                <div style={styles.typingDots}>
-                  <span />
-                  <span />
-                  <span />
+              {m.isWelcome && (
+                <div style={styles.quickWrap}>
+                  {QUICK_OPTIONS.map((opt) => (
+                    <button
+                      key={opt}
+                      style={styles.quickBtn}
+                      onClick={() => sendMessage(opt)}
+                    >
+                      {opt}
+                    </button>
+                  ))}
                 </div>
+              )}
+
+              <div style={styles.time}>
+                {m.time.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })}
               </div>
             </div>
-          )}
+          </div>
+        ))}
 
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input */}
-        <div style={styles.inputBar}>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message…"
-            style={styles.input}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
-          />
-          <button style={styles.send} onClick={() => sendMessage(input)}>
-            ➤
-          </button>
-        </div>
-
-        {/* Footer */}
-        <div style={styles.footer}>Powered by Bilal AI Studio</div>
-
-        {isAdmin && (
-          <div style={styles.adminNote}>
-            Admin Mode — Knowledge loaded from <b>hospital.json</b>
+        {loading && (
+          <div style={styles.row}>
+            <div style={{ ...styles.bubble, ...styles.botBubble }}>
+              <span style={styles.typing}>Typing…</span>
+            </div>
           </div>
         )}
+
+        <div ref={messagesEndRef} />
       </div>
+
+      {/* Input Bar (STICKY) */}
+      <div style={styles.inputBar}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Enter your message…"
+          style={styles.input}
+        />
+        <button onClick={() => sendMessage(input)} style={styles.send}>
+          Send
+        </button>
+      </div>
+
+      {/* Footer */}
+      <div style={styles.footer}>Powered by Bilal AI Studio</div>
+
+      {isAdmin && (
+        <div style={styles.adminNote}>
+          Admin Mode — data from <code>hospital.json</code>
+        </div>
+      )}
     </div>
   );
 }
@@ -144,44 +141,28 @@ export default function ChatApp() {
 /* ---------------- STYLES ---------------- */
 
 const styles = {
-  wrapper: {
+  page: {
     height: "100vh",
-    background: "linear-gradient(180deg,#e8f4ff,#f7fbff)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  chatBox: {
-    width: "100%",
-    maxWidth: 420,
-    height: "100vh",
-    background: "#fff",
+    background: "#ffffff",
     display: "flex",
     flexDirection: "column",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.12)"
+    fontFamily:
+      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
   },
 
   header: {
-    padding: 14,
-    background: "#0b5ed7",
+    padding: "14px",
+    background: "#0d6efd",
     color: "#fff",
+    fontSize: 16,
     fontWeight: 600,
-    display: "flex",
-    alignItems: "center",
-    gap: 8
-  },
-
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: "50%",
-    background: "#22c55e"
+    textAlign: "center",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.08)"
   },
 
   messages: {
     flex: 1,
-    padding: "14px",
+    padding: "14px 12px 90px", // ✅ space for sticky input
     overflowY: "auto"
   },
 
@@ -194,8 +175,8 @@ const styles = {
     maxWidth: "78%",
     padding: "12px 14px",
     borderRadius: 18,
-    fontSize: 14,
-    lineHeight: 1.5
+    fontSize: 15,
+    lineHeight: 1.55
   },
 
   botBubble: {
@@ -204,8 +185,20 @@ const styles = {
   },
 
   userBubble: {
-    background: "#0b5ed7",
-    color: "#fff"
+    background: "#0d6efd",
+    color: "#ffffff"
+  },
+
+  text: {
+    letterSpacing: 0.1,
+    fontWeight: 400
+  },
+
+  time: {
+    fontSize: 11,
+    opacity: 0.5,
+    marginTop: 6,
+    textAlign: "right"
   },
 
   quickWrap: {
@@ -216,32 +209,37 @@ const styles = {
   },
 
   quickBtn: {
-    padding: "6px 14px",
+    padding: "7px 14px",
     borderRadius: 999,
-    border: "1px solid #0b5ed7",
-    background: "#fff",
-    color: "#0b5ed7",
+    border: "1px solid #0d6efd",
+    background: "#ffffff",
+    color: "#0d6efd",
     fontSize: 13,
-    cursor: "pointer"
+    fontWeight: 500,
+    cursor: "pointer",
+    touchAction: "manipulation"
   },
 
-  typingDots: {
-    display: "flex",
-    gap: 4
+  typing: {
+    fontSize: 14,
+    opacity: 0.6
   },
-
-  typingDotsSpan: {},
 
   inputBar: {
+    position: "sticky",
+    bottom: 0,
     display: "flex",
     padding: 10,
     borderTop: "1px solid #e5e7eb",
-    background: "#fff"
+    background: "#ffffff",
+    zIndex: 10,
+    boxShadow: "0 -2px 8px rgba(0,0,0,0.05)"
   },
 
   input: {
     flex: 1,
-    padding: 10,
+    padding: "10px 12px",
+    fontSize: 15,
     borderRadius: 10,
     border: "1px solid #d1d5db",
     outline: "none"
@@ -249,19 +247,20 @@ const styles = {
 
   send: {
     marginLeft: 8,
-    padding: "0 14px",
+    padding: "0 18px",
     borderRadius: 10,
     border: "none",
-    background: "#0b5ed7",
+    background: "#0d6efd",
     color: "#fff",
-    fontSize: 16
+    fontSize: 14,
+    fontWeight: 500
   },
 
   footer: {
     textAlign: "center",
     fontSize: 11,
     padding: 6,
-    opacity: 0.5
+    opacity: 0.45
   },
 
   adminNote: {
