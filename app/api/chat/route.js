@@ -30,7 +30,7 @@ export async function POST(req) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "arcee-ai/trinity-large-preview:free",
+          model: "inclusionai/ling-3.0-flash:free",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
