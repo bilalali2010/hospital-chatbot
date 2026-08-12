@@ -30,7 +30,7 @@ export async function POST(req) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "inclusionai/ling-3.0-tiny:free",
+          model: "liquid/lfm-2.5-2.6b:free",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
