@@ -30,7 +30,7 @@ export async function POST(req) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "nvidia/nemotron-3.5-lightning:free",
+          model: "inclusionai/ling-3.0-tiny:free",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: message }
