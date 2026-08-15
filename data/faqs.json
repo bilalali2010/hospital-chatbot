@@ -1,0 +1,967 @@
+[
+  {
+    "id": "hospital-name",
+    "question": "What is the name of this hospital?",
+    "keywords": [
+      "hospital name",
+      "what is this hospital called",
+      "name of hospital"
+    ],
+    "answer": "This is **Demo Hospital Center**, a private multi-specialty hospital."
+  },
+  {
+    "id": "hospital-type",
+    "question": "What type of hospital is this?",
+    "keywords": [
+      "hospital type",
+      "what kind of hospital",
+      "private hospital"
+    ],
+    "answer": "**Demo Hospital Center** is a **Private multi-specialty hospital**."
+  },
+  {
+    "id": "opd-timings",
+    "question": "What are your OPD timings?",
+    "keywords": [
+      "opd timings",
+      "opd hours",
+      "outpatient timings",
+      "visiting hours"
+    ],
+    "answer": "Our **OPD timings** are **9:00 AM to 9:00 PM**."
+  },
+  {
+    "id": "emergency-available",
+    "question": "Is emergency available 24/7?",
+    "keywords": [
+      "emergency 24/7",
+      "emergency available",
+      "is emergency open"
+    ],
+    "answer": "Yes, **emergency services** are **Available 24/7**."
+  },
+  {
+    "id": "services-provided",
+    "question": "What services does the hospital provide?",
+    "keywords": [
+      "services provided",
+      "what services do you offer",
+      "hospital services"
+    ],
+    "answer": "We provide:\n- Consultation\n- Diagnostics\n- Emergency care\n- Inpatient services"
+  },
+  {
+    "id": "departments-list",
+    "question": "What departments does the hospital have?",
+    "keywords": [
+      "what departments",
+      "list of departments",
+      "which departments"
+    ],
+    "answer": "Our departments:\n- General Medicine\n- Cardiology\n- Gynecology Obstetrics\n- Pediatrics\n- Orthopedics\n- Neurology\n- Ophthalmology\n- Dental"
+  },
+  {
+    "id": "book-appointment",
+    "question": "Can I book an appointment through this chat?",
+    "keywords": [
+      "book appointment",
+      "book a visit",
+      "schedule appointment",
+      "reserve appointment"
+    ],
+    "answer": "I can provide information, but I don't have appointment booking capability. Please visit our OPD reception or call the hospital directly to book an appointment."
+  },
+  {
+    "id": "opd-vs-emergency",
+    "question": "What is the difference between OPD and emergency timings?",
+    "keywords": [
+      "opd vs emergency",
+      "difference opd emergency",
+      "opd emergency timing difference"
+    ],
+    "answer": "**OPD (outpatient) timings:** 9:00 AM to 9:00 PM\n- **Emergency services:** Available 24/7 (round the clock, separate from OPD hours)"
+  },
+  {
+    "id": "general_medicine-available",
+    "question": "Do you have a General Medicine department?",
+    "keywords": [
+      "general medicine",
+      "general medicine department"
+    ],
+    "answer": "Yes, we have a **General Medicine** department."
+  },
+  {
+    "id": "general_medicine-doctors",
+    "question": "Who are the doctors in General Medicine?",
+    "keywords": [
+      "doctors in general medicine",
+      "general medicine doctors",
+      "who is the general medicine doctor"
+    ],
+    "answer": "Doctors in **General Medicine**:\n- Dr. Ahmed Raza\n- Dr. Hina Qureshi"
+  },
+  {
+    "id": "general_medicine-raza-timing",
+    "question": "What is Dr. Ahmed Raza's consultation timing?",
+    "keywords": [
+      "dr. ahmed raza timing",
+      "raza timing"
+    ],
+    "answer": "**Dr. Ahmed Raza** (General Medicine) is available from **10:00 AM to 2:00 PM**."
+  },
+  {
+    "id": "general_medicine-raza-fee",
+    "question": "What is Dr. Ahmed Raza's consultation fee?",
+    "keywords": [
+      "dr. ahmed raza fee",
+      "raza fee"
+    ],
+    "answer": "**Dr. Ahmed Raza**'s consultation fee is **PKR 2000**."
+  },
+  {
+    "id": "general_medicine-qureshi-timing",
+    "question": "What is Dr. Hina Qureshi's consultation timing?",
+    "keywords": [
+      "dr. hina qureshi timing",
+      "qureshi timing"
+    ],
+    "answer": "**Dr. Hina Qureshi** (General Medicine) is available from **5:00 PM to 8:00 PM**."
+  },
+  {
+    "id": "general_medicine-qureshi-fee",
+    "question": "What is Dr. Hina Qureshi's consultation fee?",
+    "keywords": [
+      "dr. hina qureshi fee",
+      "qureshi fee"
+    ],
+    "answer": "**Dr. Hina Qureshi**'s consultation fee is **PKR 1800**."
+  },
+  {
+    "id": "general_medicine-symptom",
+    "question": "Do you treat general opd?",
+    "keywords": [
+      "general opd",
+      "general physician",
+      "family doctor"
+    ],
+    "answer": "Yes, our **General Medicine** department handles that. Doctors available: Dr. Ahmed Raza, Dr. Hina Qureshi."
+  },
+  {
+    "id": "general_medicine-fee-range",
+    "question": "What is the consultation fee for General Medicine?",
+    "keywords": [
+      "general medicine fee",
+      "general medicine consultation fee"
+    ],
+    "answer": "Consultation fee for **General Medicine**: **PKR 1800 – PKR 2000**, depending on the doctor."
+  },
+  {
+    "id": "cardiology-available",
+    "question": "Do you have a Cardiology department?",
+    "keywords": [
+      "cardiology",
+      "cardiology department"
+    ],
+    "answer": "Yes, we have a **Cardiology** department."
+  },
+  {
+    "id": "cardiology-doctors",
+    "question": "Who are the doctors in Cardiology?",
+    "keywords": [
+      "doctors in cardiology",
+      "cardiology doctors",
+      "who is the cardiology doctor"
+    ],
+    "answer": "Doctors in **Cardiology**:\n- Dr. Sana Khalid\n- Dr. Ali Hassan"
+  },
+  {
+    "id": "cardiology-khalid-timing",
+    "question": "What is Dr. Sana Khalid's consultation timing?",
+    "keywords": [
+      "dr. sana khalid timing",
+      "khalid timing"
+    ],
+    "answer": "**Dr. Sana Khalid** (Cardiology) is available from **4:00 PM to 8:00 PM**."
+  },
+  {
+    "id": "cardiology-khalid-fee",
+    "question": "What is Dr. Sana Khalid's consultation fee?",
+    "keywords": [
+      "dr. sana khalid fee",
+      "khalid fee"
+    ],
+    "answer": "**Dr. Sana Khalid**'s consultation fee is **PKR 3500**."
+  },
+  {
+    "id": "cardiology-hassan-timing",
+    "question": "What is Dr. Ali Hassan's consultation timing?",
+    "keywords": [
+      "dr. ali hassan timing",
+      "hassan timing"
+    ],
+    "answer": "**Dr. Ali Hassan** (Cardiology) is available from **6:00 PM to 9:00 PM**."
+  },
+  {
+    "id": "cardiology-hassan-fee",
+    "question": "What is Dr. Ali Hassan's consultation fee?",
+    "keywords": [
+      "dr. ali hassan fee",
+      "hassan fee"
+    ],
+    "answer": "**Dr. Ali Hassan**'s consultation fee is **PKR 3000**."
+  },
+  {
+    "id": "cardiology-facilities",
+    "question": "What facilities does Cardiology offer?",
+    "keywords": [
+      "cardiology facilities",
+      "cardiology facilities"
+    ],
+    "answer": "**Cardiology** facilities:\n- ECG\n- ECHO\n- Cardiac screening"
+  },
+  {
+    "id": "cardiology-symptom",
+    "question": "Do you treat heart problems?",
+    "keywords": [
+      "heart problems",
+      "heart doctor",
+      "chest pain"
+    ],
+    "answer": "Yes, our **Cardiology** department handles that. Doctors available: Dr. Sana Khalid, Dr. Ali Hassan."
+  },
+  {
+    "id": "cardiology-fee-range",
+    "question": "What is the consultation fee for Cardiology?",
+    "keywords": [
+      "cardiology fee",
+      "cardiology consultation fee"
+    ],
+    "answer": "Consultation fee for **Cardiology**: **PKR 3000 – PKR 3500**, depending on the doctor."
+  },
+  {
+    "id": "gynecology_obstetrics-available",
+    "question": "Do you have a Gynecology Obstetrics department?",
+    "keywords": [
+      "gynecology obstetrics",
+      "gynecology obstetrics department"
+    ],
+    "answer": "Yes, we have a **Gynecology Obstetrics** department."
+  },
+  {
+    "id": "gynecology_obstetrics-doctors",
+    "question": "Who are the doctors in Gynecology Obstetrics?",
+    "keywords": [
+      "doctors in gynecology obstetrics",
+      "gynecology obstetrics doctors",
+      "who is the gynecology obstetrics doctor"
+    ],
+    "answer": "Doctors in **Gynecology Obstetrics**:\n- Dr. Ayesha Malik\n- Dr. Maryam Iqbal"
+  },
+  {
+    "id": "gynecology_obstetrics-malik-timing",
+    "question": "What is Dr. Ayesha Malik's consultation timing?",
+    "keywords": [
+      "dr. ayesha malik timing",
+      "malik timing"
+    ],
+    "answer": "**Dr. Ayesha Malik** (Gynecology Obstetrics) is available from **11:00 AM to 3:00 PM**."
+  },
+  {
+    "id": "gynecology_obstetrics-malik-fee",
+    "question": "What is Dr. Ayesha Malik's consultation fee?",
+    "keywords": [
+      "dr. ayesha malik fee",
+      "malik fee"
+    ],
+    "answer": "**Dr. Ayesha Malik**'s consultation fee is **PKR 2500**."
+  },
+  {
+    "id": "gynecology_obstetrics-iqbal-timing",
+    "question": "What is Dr. Maryam Iqbal's consultation timing?",
+    "keywords": [
+      "dr. maryam iqbal timing",
+      "iqbal timing"
+    ],
+    "answer": "**Dr. Maryam Iqbal** (Gynecology Obstetrics) is available from **6:00 PM to 9:00 PM**."
+  },
+  {
+    "id": "gynecology_obstetrics-iqbal-fee",
+    "question": "What is Dr. Maryam Iqbal's consultation fee?",
+    "keywords": [
+      "dr. maryam iqbal fee",
+      "iqbal fee"
+    ],
+    "answer": "**Dr. Maryam Iqbal**'s consultation fee is **PKR 2800**."
+  },
+  {
+    "id": "gynecology_obstetrics-services",
+    "question": "What services does Gynecology Obstetrics offer?",
+    "keywords": [
+      "gynecology obstetrics services",
+      "gynecology obstetrics services"
+    ],
+    "answer": "**Gynecology Obstetrics** services:\n- Pregnancy checkups\n- Ultrasound\n- Delivery care"
+  },
+  {
+    "id": "gynecology_obstetrics-symptom",
+    "question": "Do you treat pregnant women?",
+    "keywords": [
+      "pregnant women",
+      "pregnancy doctor",
+      "women's health"
+    ],
+    "answer": "Yes, our **Gynecology Obstetrics** department handles that. Doctors available: Dr. Ayesha Malik, Dr. Maryam Iqbal."
+  },
+  {
+    "id": "gynecology_obstetrics-fee-range",
+    "question": "What is the consultation fee for Gynecology Obstetrics?",
+    "keywords": [
+      "gynecology obstetrics fee",
+      "gynecology obstetrics consultation fee"
+    ],
+    "answer": "Consultation fee for **Gynecology Obstetrics**: **PKR 2500 – PKR 2800**, depending on the doctor."
+  },
+  {
+    "id": "pediatrics-available",
+    "question": "Do you have a Pediatrics department?",
+    "keywords": [
+      "pediatrics",
+      "pediatrics department"
+    ],
+    "answer": "Yes, we have a **Pediatrics** department."
+  },
+  {
+    "id": "pediatrics-doctors",
+    "question": "Who are the doctors in Pediatrics?",
+    "keywords": [
+      "doctors in pediatrics",
+      "pediatrics doctors",
+      "who is the pediatrics doctor"
+    ],
+    "answer": "Doctors in **Pediatrics**:\n- Dr. Usman Tariq\n- Dr. Farah Khan"
+  },
+  {
+    "id": "pediatrics-tariq-timing",
+    "question": "What is Dr. Usman Tariq's consultation timing?",
+    "keywords": [
+      "dr. usman tariq timing",
+      "tariq timing"
+    ],
+    "answer": "**Dr. Usman Tariq** (Pediatrics) is available from **5:00 PM to 9:00 PM**."
+  },
+  {
+    "id": "pediatrics-tariq-fee",
+    "question": "What is Dr. Usman Tariq's consultation fee?",
+    "keywords": [
+      "dr. usman tariq fee",
+      "tariq fee"
+    ],
+    "answer": "**Dr. Usman Tariq**'s consultation fee is **PKR 2200**."
+  },
+  {
+    "id": "pediatrics-khan-timing",
+    "question": "What is Dr. Farah Khan's consultation timing?",
+    "keywords": [
+      "dr. farah khan timing",
+      "khan timing"
+    ],
+    "answer": "**Dr. Farah Khan** (Pediatrics) is available from **10:00 AM to 1:00 PM**."
+  },
+  {
+    "id": "pediatrics-khan-fee",
+    "question": "What is Dr. Farah Khan's consultation fee?",
+    "keywords": [
+      "dr. farah khan fee",
+      "khan fee"
+    ],
+    "answer": "**Dr. Farah Khan**'s consultation fee is **PKR 2400**."
+  },
+  {
+    "id": "pediatrics-services",
+    "question": "What services does Pediatrics offer?",
+    "keywords": [
+      "pediatrics services",
+      "pediatrics services"
+    ],
+    "answer": "**Pediatrics** services:\n- Vaccination\n- Child growth monitoring"
+  },
+  {
+    "id": "pediatrics-symptom",
+    "question": "Do you treat children?",
+    "keywords": [
+      "children",
+      "child doctor",
+      "kids health"
+    ],
+    "answer": "Yes, our **Pediatrics** department handles that. Doctors available: Dr. Usman Tariq, Dr. Farah Khan."
+  },
+  {
+    "id": "pediatrics-fee-range",
+    "question": "What is the consultation fee for Pediatrics?",
+    "keywords": [
+      "pediatrics fee",
+      "pediatrics consultation fee"
+    ],
+    "answer": "Consultation fee for **Pediatrics**: **PKR 2200 – PKR 2400**, depending on the doctor."
+  },
+  {
+    "id": "orthopedics-available",
+    "question": "Do you have a Orthopedics department?",
+    "keywords": [
+      "orthopedics",
+      "orthopedics department"
+    ],
+    "answer": "Yes, we have a **Orthopedics** department."
+  },
+  {
+    "id": "orthopedics-doctors",
+    "question": "Who are the doctors in Orthopedics?",
+    "keywords": [
+      "doctors in orthopedics",
+      "orthopedics doctors",
+      "who is the orthopedics doctor"
+    ],
+    "answer": "Doctors in **Orthopedics**:\n- Dr. Bilal Hussain\n- Dr. Kamran Shah"
+  },
+  {
+    "id": "orthopedics-hussain-timing",
+    "question": "What is Dr. Bilal Hussain's consultation timing?",
+    "keywords": [
+      "dr. bilal hussain timing",
+      "hussain timing"
+    ],
+    "answer": "**Dr. Bilal Hussain** (Orthopedics) is available from **6:00 PM to 9:00 PM**."
+  },
+  {
+    "id": "orthopedics-hussain-fee",
+    "question": "What is Dr. Bilal Hussain's consultation fee?",
+    "keywords": [
+      "dr. bilal hussain fee",
+      "hussain fee"
+    ],
+    "answer": "**Dr. Bilal Hussain**'s consultation fee is **PKR 3000**."
+  },
+  {
+    "id": "orthopedics-shah-timing",
+    "question": "What is Dr. Kamran Shah's consultation timing?",
+    "keywords": [
+      "dr. kamran shah timing",
+      "shah timing"
+    ],
+    "answer": "**Dr. Kamran Shah** (Orthopedics) is available from **3:00 PM to 6:00 PM**."
+  },
+  {
+    "id": "orthopedics-shah-fee",
+    "question": "What is Dr. Kamran Shah's consultation fee?",
+    "keywords": [
+      "dr. kamran shah fee",
+      "shah fee"
+    ],
+    "answer": "**Dr. Kamran Shah**'s consultation fee is **PKR 2700**."
+  },
+  {
+    "id": "orthopedics-services",
+    "question": "What services does Orthopedics offer?",
+    "keywords": [
+      "orthopedics services",
+      "orthopedics services"
+    ],
+    "answer": "**Orthopedics** services:\n- Fracture treatment\n- Joint pain treatment\n- Arthritis care"
+  },
+  {
+    "id": "orthopedics-symptom",
+    "question": "Do you treat bone problems?",
+    "keywords": [
+      "bone problems",
+      "joint problems",
+      "fracture doctor"
+    ],
+    "answer": "Yes, our **Orthopedics** department handles that. Doctors available: Dr. Bilal Hussain, Dr. Kamran Shah."
+  },
+  {
+    "id": "orthopedics-fee-range",
+    "question": "What is the consultation fee for Orthopedics?",
+    "keywords": [
+      "orthopedics fee",
+      "orthopedics consultation fee"
+    ],
+    "answer": "Consultation fee for **Orthopedics**: **PKR 2700 – PKR 3000**, depending on the doctor."
+  },
+  {
+    "id": "neurology-available",
+    "question": "Do you have a Neurology department?",
+    "keywords": [
+      "neurology",
+      "neurology department"
+    ],
+    "answer": "Yes, we have a **Neurology** department."
+  },
+  {
+    "id": "neurology-doctors",
+    "question": "Who are the doctors in Neurology?",
+    "keywords": [
+      "doctors in neurology",
+      "neurology doctors",
+      "who is the neurology doctor"
+    ],
+    "answer": "Doctors in **Neurology**:\n- Dr. Fahad Noor"
+  },
+  {
+    "id": "neurology-noor-timing",
+    "question": "What is Dr. Fahad Noor's consultation timing?",
+    "keywords": [
+      "dr. fahad noor timing",
+      "noor timing"
+    ],
+    "answer": "**Dr. Fahad Noor** (Neurology) is available from **4:00 PM to 8:00 PM**."
+  },
+  {
+    "id": "neurology-noor-fee",
+    "question": "What is Dr. Fahad Noor's consultation fee?",
+    "keywords": [
+      "dr. fahad noor fee",
+      "noor fee"
+    ],
+    "answer": "**Dr. Fahad Noor**'s consultation fee is **PKR 4000**."
+  },
+  {
+    "id": "neurology-services",
+    "question": "What services does Neurology offer?",
+    "keywords": [
+      "neurology services",
+      "neurology services"
+    ],
+    "answer": "**Neurology** services:\n- Headache treatment\n- Seizure management\n- Nerve disorder treatment"
+  },
+  {
+    "id": "neurology-symptom",
+    "question": "Do you treat headache?",
+    "keywords": [
+      "headache",
+      "migraine",
+      "brain doctor"
+    ],
+    "answer": "Yes, our **Neurology** department handles that. Doctors available: Dr. Fahad Noor."
+  },
+  {
+    "id": "neurology-fee-range",
+    "question": "What is the consultation fee for Neurology?",
+    "keywords": [
+      "neurology fee",
+      "neurology consultation fee"
+    ],
+    "answer": "Consultation fee for **Neurology**: **PKR 4000**, depending on the doctor."
+  },
+  {
+    "id": "ophthalmology-available",
+    "question": "Do you have a Ophthalmology department?",
+    "keywords": [
+      "ophthalmology",
+      "ophthalmology department"
+    ],
+    "answer": "Yes, we have a **Ophthalmology** department."
+  },
+  {
+    "id": "ophthalmology-doctors",
+    "question": "Who are the doctors in Ophthalmology?",
+    "keywords": [
+      "doctors in ophthalmology",
+      "ophthalmology doctors",
+      "who is the ophthalmology doctor"
+    ],
+    "answer": "Doctors in **Ophthalmology**:\n- Dr. Saad Ahmed"
+  },
+  {
+    "id": "ophthalmology-ahmed-timing",
+    "question": "What is Dr. Saad Ahmed's consultation timing?",
+    "keywords": [
+      "dr. saad ahmed timing",
+      "ahmed timing"
+    ],
+    "answer": "**Dr. Saad Ahmed** (Ophthalmology) is available from **11:00 AM to 2:00 PM**."
+  },
+  {
+    "id": "ophthalmology-ahmed-fee",
+    "question": "What is Dr. Saad Ahmed's consultation fee?",
+    "keywords": [
+      "dr. saad ahmed fee",
+      "ahmed fee"
+    ],
+    "answer": "**Dr. Saad Ahmed**'s consultation fee is **PKR 2200**."
+  },
+  {
+    "id": "ophthalmology-services",
+    "question": "What services does Ophthalmology offer?",
+    "keywords": [
+      "ophthalmology services",
+      "ophthalmology services"
+    ],
+    "answer": "**Ophthalmology** services:\n- Eye checkups\n- Vision testing\n- Eye infection treatment"
+  },
+  {
+    "id": "ophthalmology-symptom",
+    "question": "Do you treat eye problems?",
+    "keywords": [
+      "eye problems",
+      "eye doctor",
+      "vision problems"
+    ],
+    "answer": "Yes, our **Ophthalmology** department handles that. Doctors available: Dr. Saad Ahmed."
+  },
+  {
+    "id": "ophthalmology-fee-range",
+    "question": "What is the consultation fee for Ophthalmology?",
+    "keywords": [
+      "ophthalmology fee",
+      "ophthalmology consultation fee"
+    ],
+    "answer": "Consultation fee for **Ophthalmology**: **PKR 2200**, depending on the doctor."
+  },
+  {
+    "id": "dental-available",
+    "question": "Do you have a Dental department?",
+    "keywords": [
+      "dental",
+      "dental department"
+    ],
+    "answer": "Yes, we have a **Dental** department."
+  },
+  {
+    "id": "dental-doctors",
+    "question": "Who are the doctors in Dental?",
+    "keywords": [
+      "doctors in dental",
+      "dental doctors",
+      "who is the dental doctor"
+    ],
+    "answer": "Doctors in **Dental**:\n- Dr. Rabia Saleem"
+  },
+  {
+    "id": "dental-saleem-timing",
+    "question": "What is Dr. Rabia Saleem's consultation timing?",
+    "keywords": [
+      "dr. rabia saleem timing",
+      "saleem timing"
+    ],
+    "answer": "**Dr. Rabia Saleem** (Dental) is available from **2:00 PM to 7:00 PM**."
+  },
+  {
+    "id": "dental-saleem-fee",
+    "question": "What is Dr. Rabia Saleem's consultation fee?",
+    "keywords": [
+      "dr. rabia saleem fee",
+      "saleem fee"
+    ],
+    "answer": "**Dr. Rabia Saleem**'s consultation fee is **PKR 1500**."
+  },
+  {
+    "id": "dental-services",
+    "question": "What services does Dental offer?",
+    "keywords": [
+      "dental services",
+      "dental services"
+    ],
+    "answer": "**Dental** services:\n- Dental cleaning\n- Fillings\n- Tooth extraction"
+  },
+  {
+    "id": "dental-symptom",
+    "question": "Do you treat teeth problems?",
+    "keywords": [
+      "teeth problems",
+      "tooth doctor",
+      "dentist"
+    ],
+    "answer": "Yes, our **Dental** department handles that. Doctors available: Dr. Rabia Saleem."
+  },
+  {
+    "id": "dental-fee-range",
+    "question": "What is the consultation fee for Dental?",
+    "keywords": [
+      "dental fee",
+      "dental consultation fee"
+    ],
+    "answer": "Consultation fee for **Dental**: **PKR 1500**, depending on the doctor."
+  },
+  {
+    "id": "lab-tests",
+    "question": "What lab tests do you offer?",
+    "keywords": [
+      "lab tests",
+      "what tests do you offer",
+      "blood test",
+      "diagnostic tests"
+    ],
+    "answer": "Lab tests available:\n- Blood tests\n- Urine tests\n- Sugar tests"
+  },
+  {
+    "id": "imaging-services",
+    "question": "What imaging services do you provide?",
+    "keywords": [
+      "imaging services",
+      "x-ray",
+      "mri",
+      "ct scan",
+      "ultrasound"
+    ],
+    "answer": "Imaging services available:\n- ECG\n- X-ray\n- Ultrasound\n- CT scan\n- MRI"
+  },
+  {
+    "id": "imaging-ecg",
+    "question": "Do you offer ECG?",
+    "keywords": [
+      "ecg"
+    ],
+    "answer": "Yes, **ECG** is available at our diagnostic lab."
+  },
+  {
+    "id": "imaging-x-ray",
+    "question": "Do you offer X-ray?",
+    "keywords": [
+      "x-ray"
+    ],
+    "answer": "Yes, **X-ray** is available at our diagnostic lab."
+  },
+  {
+    "id": "imaging-ultrasound",
+    "question": "Do you offer Ultrasound?",
+    "keywords": [
+      "ultrasound"
+    ],
+    "answer": "Yes, **Ultrasound** is available at our diagnostic lab."
+  },
+  {
+    "id": "imaging-ct-scan",
+    "question": "Do you offer CT scan?",
+    "keywords": [
+      "ct scan"
+    ],
+    "answer": "Yes, **CT scan** is available at our diagnostic lab."
+  },
+  {
+    "id": "imaging-mri",
+    "question": "Do you offer MRI?",
+    "keywords": [
+      "mri"
+    ],
+    "answer": "Yes, **MRI** is available at our diagnostic lab."
+  },
+  {
+    "id": "test-blood-tests",
+    "question": "Do you offer Blood tests?",
+    "keywords": [
+      "blood tests"
+    ],
+    "answer": "Yes, **Blood tests** are available at our diagnostic lab."
+  },
+  {
+    "id": "test-urine-tests",
+    "question": "Do you offer Urine tests?",
+    "keywords": [
+      "urine tests"
+    ],
+    "answer": "Yes, **Urine tests** are available at our diagnostic lab."
+  },
+  {
+    "id": "test-sugar-tests",
+    "question": "Do you offer Sugar tests?",
+    "keywords": [
+      "sugar tests"
+    ],
+    "answer": "Yes, **Sugar tests** are available at our diagnostic lab."
+  },
+  {
+    "id": "diagnostic-lab-general",
+    "question": "Do you have a diagnostic lab?",
+    "keywords": [
+      "diagnostic lab",
+      "do you have a lab"
+    ],
+    "answer": "Yes, we have an in-house **diagnostic lab** offering both standard lab tests and imaging services."
+  },
+  {
+    "id": "emergency-services-list",
+    "question": "What emergency services do you provide?",
+    "keywords": [
+      "emergency services",
+      "what does emergency cover"
+    ],
+    "answer": "Emergency services include:\n- Accident handling\n- Trauma care\n- Critical medical care\n- Ambulance service"
+  },
+  {
+    "id": "emergency-timings",
+    "question": "What are the emergency department timings?",
+    "keywords": [
+      "emergency timings",
+      "emergency hours"
+    ],
+    "answer": "Our **emergency department** operates **24/7**."
+  },
+  {
+    "id": "ambulance-service",
+    "question": "Do you have ambulance service?",
+    "keywords": [
+      "ambulance",
+      "ambulance service"
+    ],
+    "answer": "Yes, **ambulance service** is available as part of our emergency services."
+  },
+  {
+    "id": "accident-trauma",
+    "question": "Do you handle accident and trauma cases?",
+    "keywords": [
+      "accident",
+      "trauma",
+      "accident handling"
+    ],
+    "answer": "Yes, our emergency department handles **accident and trauma cases**, including critical medical care."
+  },
+  {
+    "id": "room-types",
+    "question": "What room types are available for admission?",
+    "keywords": [
+      "room types",
+      "admission rooms",
+      "types of rooms"
+    ],
+    "answer": "Available room types:\n- General ward\n- Semi-private room\n- Private room\n- ICU"
+  },
+  {
+    "id": "room-general-ward",
+    "question": "Do you have General ward?",
+    "keywords": [
+      "general ward"
+    ],
+    "answer": "Yes, we have **General ward** available for admitted patients."
+  },
+  {
+    "id": "room-semi-private-room",
+    "question": "Do you have Semi-private room?",
+    "keywords": [
+      "semi-private room"
+    ],
+    "answer": "Yes, we have **Semi-private room** available for admitted patients."
+  },
+  {
+    "id": "room-private-room",
+    "question": "Do you have Private room?",
+    "keywords": [
+      "private room"
+    ],
+    "answer": "Yes, we have **Private room** available for admitted patients."
+  },
+  {
+    "id": "room-icu",
+    "question": "Do you have ICU?",
+    "keywords": [
+      "icu"
+    ],
+    "answer": "Yes, we have **ICU** available for admitted patients."
+  },
+  {
+    "id": "nursing-staff",
+    "question": "Is trained nursing staff available?",
+    "keywords": [
+      "nursing staff",
+      "trained nurses"
+    ],
+    "answer": "Yes, trained nursing staff available."
+  },
+  {
+    "id": "payment-methods",
+    "question": "What payment methods do you accept?",
+    "keywords": [
+      "payment methods",
+      "how can i pay"
+    ],
+    "answer": "We accept:\n- Cash\n- Card"
+  },
+  {
+    "id": "insurance-accepted",
+    "question": "Do you accept insurance?",
+    "keywords": [
+      "insurance",
+      "insurance accepted",
+      "medical insurance"
+    ],
+    "answer": "Selected insurance providers accepted."
+  },
+  {
+    "id": "payment-policy",
+    "question": "When is payment required?",
+    "keywords": [
+      "payment policy",
+      "when do i pay"
+    ],
+    "answer": "Payment required after consultation or services."
+  },
+  {
+    "id": "payment-cash",
+    "question": "Do you accept cash?",
+    "keywords": [
+      "cash payment",
+      "pay by cash"
+    ],
+    "answer": "Yes, **Cash** is an accepted payment method."
+  },
+  {
+    "id": "payment-card",
+    "question": "Do you accept card?",
+    "keywords": [
+      "card payment",
+      "pay by card"
+    ],
+    "answer": "Yes, **Card** is an accepted payment method."
+  },
+  {
+    "id": "pharmacy-available",
+    "question": "Do you have a pharmacy?",
+    "keywords": [
+      "pharmacy",
+      "in-house pharmacy",
+      "do you sell medicine"
+    ],
+    "answer": "Yes, in-house pharmacy with prescribed medicines available during hospital hours."
+  },
+  {
+    "id": "cheapest-consultation",
+    "question": "What is the cheapest consultation fee?",
+    "keywords": [
+      "cheapest fee",
+      "lowest fee",
+      "minimum consultation fee",
+      "cheapest consultation fee",
+      "lowest consultation fee"
+    ],
+    "answer": "The lowest consultation fee at our hospital is **PKR 1500**."
+  },
+  {
+    "id": "most-expensive-consultation",
+    "question": "What is the most expensive consultation fee?",
+    "keywords": [
+      "most expensive fee",
+      "highest fee",
+      "maximum consultation fee",
+      "most expensive consultation fee",
+      "highest consultation fee"
+    ],
+    "answer": "The highest consultation fee at our hospital is **PKR 4000**."
+  },
+  {
+    "id": "total-departments",
+    "question": "How many departments does the hospital have?",
+    "keywords": [
+      "how many departments",
+      "number of departments"
+    ],
+    "answer": "We have **8 departments**: General Medicine, Cardiology, Gynecology Obstetrics, Pediatrics, Orthopedics, Neurology, Ophthalmology, Dental."
+  },
+  {
+    "id": "inpatient-services",
+    "question": "Do you provide inpatient services?",
+    "keywords": [
+      "inpatient services",
+      "hospital admission services"
+    ],
+    "answer": "Yes, **inpatient services** are available, including admission rooms and trained nursing staff."
+  }
+]

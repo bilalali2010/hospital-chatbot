@@ -1,0 +1,172 @@
+:root {
+  --ink: #0b2e42;
+  --ink-2: #123f58;
+  --paper: #f3f6f7;
+  --card: #ffffff;
+  --accent: #1e8a97;
+  --accent-deep: #146672;
+  --accent-soft: #dcf0f2;
+  --line: #e1e6e8;
+  --text: #1b2432;
+  --text-muted: #64748b;
+  --online: #2f9e63;
+  --emergency: #c0392b;
+  --emergency-soft: #fbe4e1;
+
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* Scrollbar */
+.ngc-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.ngc-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ngc-scroll::-webkit-scrollbar-thumb {
+  background: #d3d7de;
+  border-radius: 8px;
+}
+.ngc-scroll::-webkit-scrollbar-thumb:hover {
+  background: #b7bdc8;
+}
+
+/* Focus states */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Quick reply chips */
+.ngc-quick-btn {
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.ngc-quick-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.ngc-quick-btn:active {
+  transform: scale(0.97);
+}
+
+/* Send button */
+.ngc-send-btn {
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.ngc-send-btn:hover:not(:disabled) {
+  background: var(--ink-2);
+}
+.ngc-send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+.ngc-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Input */
+.ngc-input {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ngc-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* Typing indicator */
+.ngc-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+.ngc-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: ngc-bounce 1.2s infinite ease-in-out;
+}
+.ngc-typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.ngc-typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes ngc-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Rendered message content (markdown output) */
+.ngc-msg p {
+  margin: 0 0 8px;
+}
+.ngc-msg p:last-child {
+  margin-bottom: 0;
+}
+.ngc-msg ul {
+  margin: 2px 0 10px;
+  padding-left: 18px;
+}
+.ngc-msg ul:last-child {
+  margin-bottom: 0;
+}
+.ngc-msg li {
+  margin-bottom: 4px;
+}
+.ngc-msg li::marker {
+  color: var(--accent-deep);
+}
+.ngc-msg strong {
+  font-weight: 700;
+}
+.ngc-msg-user strong {
+  color: #ffffff;
+}
+.ngc-msg-user li::marker {
+  color: var(--accent-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ngc-typing span,
+  .ngc-quick-btn,
+  .ngc-send-btn,
+  .ngc-input {
+    animation: none !important;
+    transition: none !important;
+  }
+}
